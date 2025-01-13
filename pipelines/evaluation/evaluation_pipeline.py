@@ -64,8 +64,13 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
     precision = precision_score(all_labels, all_predictions, average="weighted")
     recall = recall_score(all_labels, all_predictions, average="weighted")
     f1 = f1_score(all_labels, all_predictions, average="weighted")
-
-    # Log and print metrics
+    class_accuracies = []
+    for i in range(num_classes):
+        accuracy = 100 * class_correct[i] / class_total[i] if class_total[i] > 0 else 0
+        class_accuracies.append(accuracy)
+        if verbose:
+            print(f"Accuracy of class {i}: {accuracy:.2f}%")
+        logger.info(f"Accuracy of class {i}: {accuracy:.2f}%")
     logger.info(f"Validation Loss: {val_loss / len(val_loader):.4f}")
     logger.info(f"Validation Accuracy: {val_accuracy:.2f}%")
     logger.info(f"Validation Precision: {precision:.2f}")
@@ -75,11 +80,6 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
     if verbose:
         print(f"Validation Metrics: Loss = {val_loss / len(val_loader):.4f}, Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
 
-    for i in range(num_classes):
-        accuracy = 100 * class_correct[i] / class_total[i] if class_total[i] > 0 else 0
-        if verbose:
-            print(f"Accuracy of class {i}: {accuracy:.2f}%")
-        logger.info(f"Accuracy of class {i}: {accuracy:.2f}%")
 
     return val_loss / len(val_loader), val_accuracy, precision, recall, f1
 

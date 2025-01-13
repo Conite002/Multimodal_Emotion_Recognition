@@ -7,8 +7,9 @@ def create_logger(logfile):
     Create a logger instance that cleans the logfile before writing.
     """
     # Ensure the logfile is cleared before logging starts
-    with open(logfile, 'w'):  # Open the file in write mode to clear its content
-        pass
+    # with open(logfile, 'w'):
+    #     pass
+    
 
     logger = logging.getLogger(logfile)
     logger.setLevel(logging.INFO)
