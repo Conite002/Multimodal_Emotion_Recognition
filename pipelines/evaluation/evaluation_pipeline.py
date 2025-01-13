@@ -1,7 +1,7 @@
 import torch
 import logging
 
-def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log"):
+def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log", verbose=True):
     """
     Evaluate the model on validation data.
 
@@ -55,7 +55,8 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
 
     for i in range(num_classes):
         accuracy = 100 * class_correct[i] / class_total[i] if class_total[i] > 0 else 0
-        print(f"Accuracy of class {i}: {accuracy:.2f}%")
+        if verbose:
+            print(f"Accuracy of class {i}: {accuracy:.2f}%")
         logging.info(f"Accuracy of class {i}: {accuracy:.2f}%")
 
     return val_loss/ len(val_loader), val_accuracy
