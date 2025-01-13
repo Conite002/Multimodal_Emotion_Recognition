@@ -891,3 +891,48 @@
 2025-01-13 07:08:59,111 - INFO - Accuracy of class 6: 28.89%
 2025-01-13 07:08:59,111 - INFO - Epoch 94: Train Loss = 0.5456, Val Loss = 3.6584, Val Accuracy = 29.15%
 2025-01-13 07:08:59,111 - INFO - Starting Epoch 95/500
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 0: 44.09%
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 1: 37.84%
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 2: 11.11%
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 4: 4.35%
+2025-01-13 07:09:02,528 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 07:09:02,529 - INFO - Accuracy of class 6: 13.33%
+2025-01-13 07:09:02,529 - INFO - Epoch 95: Train Loss = 0.5323, Val Loss = 3.9215, Val Accuracy = 30.14%
+2025-01-13 07:09:02,529 - INFO - Starting Epoch 96/500
+2025-01-13 07:09:06,115 - INFO - Accuracy of class 0: 43.01%
+2025-01-13 07:09:06,115 - INFO - Accuracy of class 1: 27.03%
+2025-01-13 07:09:06,116 - INFO - Accuracy of class 2: 14.81%
+2025-01-13 07:09:06,116 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 07:09:06,116 - INFO - Accuracy of class 4: 4.35%
+2025-01-13 07:09:06,116 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 07:09:06,116 - INFO - Accuracy of class 6: 22.22%
+2025-01-13 07:09:06,116 - INFO - Epoch 96: Train Loss = 0.5126, Val Loss = 3.6986, Val Accuracy = 30.14%
+2025-01-13 07:09:06,116 - INFO - Starting Epoch 97/500
+2025-01-13 07:09:09,445 - INFO - Accuracy of class 0: 40.86%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 1: 40.54%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 2: 11.11%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 4: 4.35%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 07:09:09,446 - INFO - Accuracy of class 6: 6.67%
+2025-01-13 07:09:09,446 - INFO - Epoch 97: Train Loss = 0.5037, Val Loss = 4.1538, Val Accuracy = 30.05%
+2025-01-13 07:09:09,446 - INFO - Starting Epoch 98/500
+2025-01-13 07:09:12,750 - INFO - Accuracy of class 0: 38.71%
+2025-01-13 07:09:12,750 - INFO - Accuracy of class 1: 37.84%
+2025-01-13 07:09:12,750 - INFO - Accuracy of class 2: 7.41%
+2025-01-13 07:09:12,751 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 07:09:12,751 - INFO - Accuracy of class 4: 4.35%
+2025-01-13 07:09:12,751 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 07:09:12,751 - INFO - Accuracy of class 6: 8.89%
+2025-01-13 07:09:12,751 - INFO - Epoch 98: Train Loss = 0.5495, Val Loss = 3.9032, Val Accuracy = 28.52%
+2025-01-13 07:09:12,751 - INFO - Starting Epoch 99/500
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 0: 52.69%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 1: 5.41%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 2: 7.41%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 4: 39.13%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 07:09:16,046 - INFO - Accuracy of class 6: 6.67%
+2025-01-13 07:09:16,046 - INFO - Epoch 99: Train Loss = 0.5098, Val Loss = 4.1492, Val Accuracy = 30.87%
+2025-01-13 07:09:16,046 - INFO - Starting Epoch 100/500
