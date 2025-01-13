@@ -1,0 +1,8 @@
+# Ignore the entire data folder and its contents
+data/*
+data/train/*
+data/test/*
+outputs/preprocessed/train/*
+outputs/preprocessed/val/*
+outputs/preprocessed/
+outputs/*
