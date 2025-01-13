@@ -3,9 +3,21 @@ import torch.optim as optim
 from tqdm import tqdm
 from pipelines.evaluation.evaluation_pipeline import evaluate_model
 import torch 
+import logging
 
 
-def train_model(model, train_loader, val_loader, num_epochs, learning_rate, device, modal=None):
+def train_model(model, train_loader, val_loader, num_epochs, learning_rate, device, modal=None, logfile="training.log"):
+    """
+    Train the model using the provided training and validation data loaders.
+    """
+    logging.basicConfig(
+        filename=logfile,  # Use the logfile passed as a parameter
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+    logger = logging.getLogger()
+
+
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     criterion = nn.CrossEntropyLoss()
@@ -14,6 +26,8 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
     for epoch in range(num_epochs):
         model.train()
         train_loss = 0.0
+        logger.info(f"Starting Epoch {epoch + 1}/{num_epochs}")
+
         for inputs, labels in tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} - Training"):
                 
             if labels.dim() > 1:
@@ -27,18 +41,18 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
                 # inputs = inputs.squeeze(1)
                 inputs = inputs.unsqueeze(1)
             # 
-            print(f"Inputs shape: {inputs.shape}")
 
             inputs, labels = inputs.to(device), labels.to(device)
             optimizer.zero_grad()
             outputs = model(inputs)
-            print(f"outputs shape: {outputs.shape}")   
             loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
 
         val_loss, val_accuracy = evaluate_model(model, val_loader, criterion, device)
-        print(f"Epoch {epoch + 1}: Train Loss = {train_loss:.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
+        logger.info(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
+
+        # print(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
 
     return model

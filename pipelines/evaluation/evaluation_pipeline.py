@@ -1,6 +1,7 @@
 import torch
+import logging
 
-def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None):
+def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log"):
     """
     Evaluate the model on validation data.
 
@@ -13,6 +14,13 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
     Returns:
         tuple: (validation loss, validation accuracy)
     """
+    logging.basicConfig(
+        filename=logfile,  # Use the logfile passed as a parameter
+        level=logging.INFO,
+        format="%(asctime)s - %(levelname)s - %(message)s",
+    )
+    logger = logging.getLogger()
+
     model.eval()
     val_loss = 0.0
     correct = 0
@@ -43,11 +51,11 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
                 class_correct[label] += (predicted[i].item() == label)
 
 
-
     val_accuracy = 100 * correct / total if total > 0 else 0
 
     for i in range(num_classes):
         accuracy = 100 * class_correct[i] / class_total[i] if class_total[i] > 0 else 0
         print(f"Accuracy of class {i}: {accuracy:.2f}%")
+        logging.info(f"Accuracy of class {i}: {accuracy:.2f}%")
 
     return val_loss/ len(val_loader), val_accuracy
