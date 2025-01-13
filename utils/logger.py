@@ -3,11 +3,18 @@ import os
 from datetime import datetime
 
 def create_logger(logfile):
-    logger = logging.getLogger(logfile)  # Create a logger with the logfile name
+    """
+    Create a logger instance that cleans the logfile before writing.
+    """
+    # Ensure the logfile is cleared before logging starts
+    with open(logfile, 'w'):  # Open the file in write mode to clear its content
+        pass
+
+    logger = logging.getLogger(logfile)
     logger.setLevel(logging.INFO)
 
     if not logger.handlers:
-        file_handler = logging.FileHandler(logfile)  # Write logs to the specified file
+        file_handler = logging.FileHandler(logfile)
         file_handler.setLevel(logging.INFO)
         formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
         file_handler.setFormatter(formatter)

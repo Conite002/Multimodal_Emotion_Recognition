@@ -1,0 +1,12 @@
+2025-01-13 10:12:41,304 - INFO - Validation Loss: 1.5988
+2025-01-13 10:12:41,304 - INFO - Validation Accuracy: 44.49%
+2025-01-13 10:12:41,304 - INFO - Validation Precision: 0.28
+2025-01-13 10:12:41,305 - INFO - Validation Recall: 0.44
+2025-01-13 10:12:41,305 - INFO - Validation F1-Score: 0.32
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 0: 93.18%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 1: 4.91%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 2: 31.37%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 4: 0.00%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 10:12:41,305 - INFO - Accuracy of class 6: 0.00%

@@ -45,9 +45,12 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
             optimizer.step()
             train_loss += loss.item()
 
-        val_loss, val_accuracy = evaluate_model(model, val_loader, criterion, device, modal=modal, verbose=verbose)
-        logger.info(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
-
+        val_loss, val_accuracy, precision, recall, f1 = evaluate_model(model, val_loader, criterion, device, modal=modal, verbose=verbose)
+        # logger.info(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
+        # info with loss, accucacy precision, recall, f1
+        logger.info(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
         # print(f"Epoch {epoch + 1}: Train Loss = {train_loss/len(train_loader) :.4f}, Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%")
 
     return model
+
+
