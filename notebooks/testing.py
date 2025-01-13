@@ -6,11 +6,19 @@ sys.path.append(os.path.abspath('..'))
 from preprocessing.text.preprocess_text import preprocess_text_for_model, load_text_model
 from preprocessing.audio.preprocess_audio import preprocess_audio_for_model, load_audio_model, extract_audio
 from pipelines.preprocessing.data_pipeline import generate_metadata
-
+import numpy as np
 import torch.nn as nn
-from pipelines.training.training_pipeline import train_model
+from pipelines.training.training_pipeline import train_model, train_model_coattention
 from models.audio.audio_model import AudioCNNClassifier
 from pipelines.training.training_pipeline import evaluate_model
+
+from torch import nn, optim
+from tqdm import tqdm
+from models.bigru_coattention.coattention import CoAttentionFusion
+from utils.logger import create_logger
+from sklearn.metrics import precision_score, recall_score, f1_score
+from pipelines.evaluation.evaluation_pipeline import test_model_coattention, evaluate_model_coattention
+from models.bigru_coattention.multimodal import MultiModalDataset
 
 
 
@@ -38,57 +46,42 @@ test_loaders = {
     'label': DataLoader(saved_data['test']['labels'], batch_size=32, shuffle=False)
 }
 
+import torch
+import numpy as np
 
 
-
-# audio_model = AudioCNNClassifier(input_dim=768, num_classes=7)
-# train_model_audio = train_model(audio_model, train_loaders["audio"], val_loaders["audio"], num_epochs=5, learning_rate=1e-3, device="cpu")
-# test_audio_loss, test_audio_acc = evaluate_model(train_model_audio, test_loaders["audio"], device="cpu", criterion=nn.CrossEntropyLoss())
-
-from models.text.text_model import TextLSTMClassifier
-
-text_model = TextLSTMClassifier(input_dim=768, num_classes=7)
-
-trained_text_model = train_model(
-    text_model,
-    train_loaders["text"],
-    val_loaders["text"],
-    num_epochs=5,
-    learning_rate=1e-3,
-    device="cpu",
-    modal="text"
+train_dataset = MultiModalDataset(
+    saved_data['train']['audio'],
+    saved_data['train']['text'],
+    saved_data['train']['video'],
+    saved_data['train']['labels']
 )
 
-test_loss, test_accuracy = evaluate_model(
-    trained_text_model,
-    test_loaders["text"],
-    criterion=nn.CrossEntropyLoss(),
-    device="cpu"
+val_dataset = MultiModalDataset(
+    saved_data['val']['audio'],
+    saved_data['val']['text'],
+    saved_data['val']['video'],
+    saved_data['val']['labels']
 )
 
-# print(f"Text Test Loss: {test_loss:.4f}, Text Test Accuracy: {test_accuracy:.2f}%")
+test_dataset = MultiModalDataset(
+    saved_data['test']['audio'],
+    saved_data['test']['text'],
+    saved_data['test']['video'],
+    saved_data['test']['labels']
+)
 
-# from models.video.video_model import VideoMLPClassifier
+# Create DataLoaders
+train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
+test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
-# # Define the video model
-# video_model = VideoMLPClassifier(input_dim=768, num_classes=7)
+# --------------------------------------------------------------------------------
+# Train Model
+# --------------------------------------------------------------------------------
 
-# # Train and validate the video model
-# trained_video_model = train_model(
-#     video_model,
-#     train_loaders["video"],
-#     val_loaders["video"],
-#     num_epochs=5,
-#     learning_rate=1e-3,
-#     device="cpu",
-# )
 
-# # Evaluate the video model on the test set
-# test_loss, test_accuracy = evaluate_model(
-#     trained_video_model,
-#     test_loaders["video"],
-#     criterion=nn.CrossEntropyLoss(),
-#     device="cpu"
-# )
+co_attention_model = CoAttentionFusion(input_dim_audio=768, input_dim_text=768, input_dim_video=768, num_classes=7)
+trained_model = train_model_coattention(co_attention_model, train_loader, val_loader, num_epochs=50, learning_rate=1e-3, device="cpu", num_classes=7, logfile=os.path.join('..','logs','training_logs', "coattention_training.log"), verbose=False)
+test_accuracy, precision, recall, f1 = test_model_coattention(trained_model, test_loader, device="cpu", num_classes=7, verbose=True, logfile=os.path.join('..','logs','training_logs', "coattention_evaluation.log"))
 
-# print(f"Video Test Loss: {test_loss:.4f}, Video Test Accuracy: {test_accuracy:.2f}%")

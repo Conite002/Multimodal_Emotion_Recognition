@@ -41,21 +41,20 @@ class AttentionPooling(nn.Module):
 class VideoMLPClassifier(nn.Module):
     def __init__(self, input_dim, num_classes, temporal_dim=16):
         super(VideoMLPClassifier, self).__init__()
-        self.attention_pooling = AttentionPooling(input_dim)  # Reduce temporal dimension
-        self.fc1 = nn.Linear(input_dim, 512)  # Fully connected layers
+        self.attention_pooling = AttentionPooling(input_dim)  
+        self.fc1 = nn.Linear(input_dim, 512) 
         self.fc2 = nn.Linear(512, 128)
         self.fc3 = nn.Linear(128, num_classes)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.3)
 
     def forward(self, x):
-        print(f"Input shape to forward: {x.shape}")  # [batch_size, 16, 768]
-        x = self.attention_pooling(x)  # [batch_size, 768]
-        print(f"Shape after attention pooling: {x.shape}")
+        x = self.attention_pooling(x) 
+        # print(f"Shape after attention pooling: {x.shape}")
         x = self.relu(self.fc1(x))
         x = self.dropout(x)
         x = self.relu(self.fc2(x))
         x = self.dropout(x)
         x = self.fc3(x)
-        print(f"Output shape from forward: {x.shape}")  # [batch_size, num_classes]
+        # print(f"Output shape from forward: {x.shape}") 
         return x
