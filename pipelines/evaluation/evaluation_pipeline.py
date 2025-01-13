@@ -1,5 +1,6 @@
 import torch
 import logging
+from utils.logger import create_logger
 
 def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log", verbose=True):
     """
@@ -14,12 +15,8 @@ def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=No
     Returns:
         tuple: (validation loss, validation accuracy)
     """
-    logging.basicConfig(
-        filename=logfile,  # Use the logfile passed as a parameter
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
-    logger = logging.getLogger()
+    logger = create_logger(logfile)
+
 
     model.eval()
     val_loss = 0.0

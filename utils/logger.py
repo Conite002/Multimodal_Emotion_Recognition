@@ -2,21 +2,15 @@ import logging
 import os
 from datetime import datetime
 
-def setup_logger(log_folder, dim, name):
-    """Set up a logger with a unique file name."""
-    os.makedirs(log_folder, exist_ok=True)
-    timestamp = datetime.now().strftime("%Y-%m-%d_%H%M%S")
-    log_file = os.path.join(log_folder, f"{name}_embedding_dim_{dim}_{timestamp}.log")
+def create_logger(logfile):
+    logger = logging.getLogger(logfile)  # Create a logger with the logfile name
+    logger.setLevel(logging.INFO)
 
-    for handler in logging.root.handlers[:]:
-        logging.root.removeHandler(handler)
+    if not logger.handlers:
+        file_handler = logging.FileHandler(logfile)  # Write logs to the specified file
+        file_handler.setLevel(logging.INFO)
+        formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
 
-    logging.basicConfig(
-        filename=log_file,
-        level=logging.INFO,
-        format="%(asctime)s - %(message)s",
-        filemode="w"
-    )
-    logger = logging.getLogger()
-    logger.info(f"Logger initialized for dimension {dim}. Log file: {log_file}")
-    return logger, log_file
+    return logger

@@ -4,18 +4,13 @@ from tqdm import tqdm
 from pipelines.evaluation.evaluation_pipeline import evaluate_model
 import torch 
 import logging
-
+from utils.logger import create_logger
 
 def train_model(model, train_loader, val_loader, num_epochs, learning_rate, device, modal=None, logfile="training.log", verbose=True):
     """
     Train the model using the provided training and validation data loaders.
     """
-    logging.basicConfig(
-        filename=logfile,  # Use the logfile passed as a parameter
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
-    logger = logging.getLogger()
+    logger = create_logger(logfile)
 
 
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
