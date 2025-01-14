@@ -30,3 +30,58 @@ class MultiModalDataset(torch.utils.data.Dataset):
             self.video_data[idx],  
             self.labels[idx]       
         )
+
+# --------------------------------------------------------------------------------
+# MultiModalDataset_MultiSpeaker
+# --------------------------------------------------------------------------------
+
+import torch
+from torch.utils.data import Dataset
+import json
+class MultiModalDatasetWithSpeaker(Dataset):
+    def __init__(self, audio_data, text_data, video_data, labels, json_path, speaker_to_id=None):
+        """
+        Dataset class to load audio, text, video, speakers, and labels.
+
+        Args:
+            audio_data (torch.Tensor): Preprocessed audio features.
+            text_data (torch.Tensor): Preprocessed text features.
+            video_data (torch.Tensor): Preprocessed video features.
+            labels (torch.Tensor): Labels for classification.
+            json_path (str): Path to the JSON file with speaker information.
+            speaker_to_id (dict): Mapping of speaker names to unique IDs.
+        """
+        self.audio_data = audio_data
+        self.text_data = text_data
+        self.video_data = video_data
+        self.labels = labels
+
+        # Load speakers from JSON
+        with open(json_path, "r") as file:
+            self.json_data = json.load(file)
+        speakers = [entry['Speaker'] for entry in self.json_data]
+
+        # Handle speaker-to-ID mapping
+        self.speaker_to_id = speaker_to_id or {speaker: idx for idx, speaker in enumerate(set(speakers))}
+        self.speaker_to_id['UNK'] = len(self.speaker_to_id)  # Add UNK (unknown speaker) ID
+
+        # Map speakers to IDs
+        self.speaker_ids = torch.tensor(
+            [self.speaker_to_id.get(speaker, self.speaker_to_id['UNK']) for speaker in speakers],
+            dtype=torch.long
+        )
+
+    def __len__(self):
+        return len(self.labels)
+
+    def __getitem__(self, idx):
+        return (
+            self.audio_data[idx],  
+            self.text_data[idx],   
+            self.video_data[idx],  
+            self.speaker_ids[idx],  
+            self.labels[idx]       
+        )
+
+
+# --------------------------------------------------------------------------------
