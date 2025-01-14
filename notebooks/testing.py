@@ -1,4 +1,3 @@
-import os
 import torch
 from torch.utils.data import DataLoader
 import sys, os
@@ -24,72 +23,16 @@ from utils.logger import create_logger
 from sklearn.metrics import precision_score, recall_score, f1_score
 from pipelines.evaluation.evaluation_pipeline import test_model_coattention, evaluate_model_coattention
 from models.bigru_coattention.multimodal import MultiModalDataset, MultiModalDatasetWithSpeaker
-
+from utils.dataloader import extract_tensors_from_tensordataset
 
 
 saving_dir = os.path.join("..", "outputs", "embeddings")
 saved_data = torch.load(os.path.join(saving_dir, "loaders_datasets.pt"))
 
-# train_loaders = {
-#     'audio': DataLoader(saved_data['train']['audio'], batch_size=32, shuffle=True),
-#     'text': DataLoader(saved_data['train']['text'], batch_size=32, shuffle=True),
-#     'video': DataLoader(saved_data['train']['video'], batch_size=32, shuffle=True),
-#     'label': DataLoader(saved_data['train']['labels'], batch_size=32, shuffle=True)
-# }
-
-# val_loaders = {
-#     'audio': DataLoader(saved_data['val']['audio'], batch_size=32, shuffle=False),
-#     'text': DataLoader(saved_data['val']['text'], batch_size=32, shuffle=False),
-#     'video': DataLoader(saved_data['val']['video'], batch_size=32, shuffle=False),
-#     'label': DataLoader(saved_data['val']['labels'], batch_size=32, shuffle=False)
-# }
-
-# test_loaders = {
-#     'audio': DataLoader(saved_data['test']['audio'], batch_size=32, shuffle=False),
-#     'text': DataLoader(saved_data['test']['text'], batch_size=32, shuffle=False),
-#     'video': DataLoader(saved_data['test']['video'], batch_size=32, shuffle=False),
-#     'label': DataLoader(saved_data['test']['labels'], batch_size=32, shuffle=False)
-# }
 
 
 
-# train_dataset = MultiModalDataset(
-#     saved_data['train']['audio'],
-#     saved_data['train']['text'],
-#     saved_data['train']['video'],
-#     saved_data['train']['labels']
-# )
 
-# val_dataset = MultiModalDataset(
-#     saved_data['val']['audio'],
-#     saved_data['val']['text'],
-#     saved_data['val']['video'],
-#     saved_data['val']['labels']
-# )
-
-# test_dataset = MultiModalDataset(
-#     saved_data['test']['audio'],
-#     saved_data['test']['text'],
-#     saved_data['test']['video'],
-#     saved_data['test']['labels']
-# )
-
-# # Create DataLoaders
-# train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-# val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
-# test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-
-# --------------------------------------------------------------------------------
-# Train Model with Speaker Embeddings
-# --------------------------------------------------------------------------------
-
-
-
-def extract_tensors_from_tensordataset(tensor_dataset):
-    features = []
-    for item in tensor_dataset:
-        features.append(item[0])
-    return torch.stack(features)
 
 
 train_audio = extract_tensors_from_tensordataset(saved_data['train']['audio'])
@@ -145,18 +88,6 @@ test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
 
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 
-# Iterate through the DataLoader
-for batch_idx, batch in enumerate(train_loader):
-    print(f"Batch {batch_idx} shapes:")
-    print("Audio:", batch[0].shape)
-    print("Text:", batch[1].shape)
-    print("Video:", batch[2].shape)
-    print("Labels:", batch[3].shape)
-    if batch_idx == 1: 
-        break
-
-
-# --------------------------------------------------------------------------------
 
 
 # --------------------------------------------------------------------------------

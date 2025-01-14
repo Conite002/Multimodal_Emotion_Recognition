@@ -97,3 +97,9 @@ def create_data_loaders(train_path, val_path, dims, batch_size=32):
         "video": DataLoader(TensorDataset(val_video_tensors, val_labels), batch_size=batch_size),
     }
     return train_loaders, val_loaders, label_mapping
+
+def extract_tensors_from_tensordataset(tensor_dataset):
+    features = []
+    for item in tensor_dataset:
+        features.append(item[0])
+    return torch.stack(features)

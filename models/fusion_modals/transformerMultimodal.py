@@ -1,6 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from tqdm import tqdm
+from sklearn.metrics import precision_score, recall_score, f1_score, classification_report
+from utils.logger import create_logger
+
 
 
 class TransformerMultimodal(nn.Module):
@@ -55,10 +59,11 @@ class TransformerMultimodal(nn.Module):
 
 from sklearn.metrics import precision_score, recall_score, f1_score, classification_report
 
-def validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device):
+def validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device, verbose=True, logfile=None):
     """
     Validate the TransformerMultimodal model and compute metrics.
     """
+    logfile = create_logger(logfile)
     model.eval()
     val_loss = 0.0
     correct = 0
@@ -84,15 +89,24 @@ def validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device):
 
     # Compute overall metrics
     val_accuracy = 100 * correct / total
-    precision = precision_score(all_labels, all_predictions, average="weighted")
-    recall = recall_score(all_labels, all_predictions, average="weighted")
-    f1 = f1_score(all_labels, all_predictions, average="weighted")
-
-    print(f"Validation Loss: {val_loss / len(val_loader):.4f}, Val Accuracy: {val_accuracy:.2f}%, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
+    precision = precision_score(all_labels, all_predictions, average="weighted")*100
+    recall = recall_score(all_labels, all_predictions, average="weighted")*100
+    f1 = f1_score(all_labels, all_predictions, average="weighted")*100
+    class_report = classification_report(
+            all_labels,
+            all_predictions,
+            target_names=[f"Class {i}" for i in range(len(set(all_labels)))],
+            output_dict=True
+     )
+    print(f"Validation Loss: {val_loss / len(val_loader):.4f}, Val Accuracy: {val_accuracy:.2f}%, Precision: {precision:.4f}%, Recall: {recall:.4f}%, F1: {f1:.4f}%")
     # Per-class metrics
     class_metrics = classification_report(all_labels, all_predictions, target_names=[f"Class {i}" for i in range(len(set(all_labels)))], output_dict=True)
-
-    return val_loss / len(val_loader), val_accuracy, class_metrics
+    for class_name, metrics in class_report.items():
+        if class_name.startswith('Class'):
+            if verbose:
+                print(f"{class_name}: Precision: {metrics['precision']*100:.2f}%, Recall: {metrics['recall']*100:.2f}%, F1-Score: {metrics['f1-score']*100:.2f}%")
+            logfile.info(f"{class_name}: Precision: {metrics['precision']*100:.2f}%, Recall: {metrics['recall']*100:.2f}%, F1-Score: {metrics['f1-score']*100:.2f}%")
+    return val_loss / len(val_loader), val_accuracy, class_metrics, 
 
 
 
@@ -130,13 +144,20 @@ def test_model_TF_FUSION_MULTIMODAL(model, test_loader, device):
     print(f"Test Accuracy: {accuracy:.2f}%, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
     print(f"Per-Class Metrics:\n{classification_report(all_labels, all_predictions, target_names=[f'Class {i}' for i in range(len(set(all_labels)))] )}")
 
+    for class_name, metrics in class_metrics.items():
+        if class_name.startswith('Class'):
+            print(f"{class_name}: Precision: {metrics['precision']*100:.2f}%, Recall: {metrics['recall']*100:.2f}%, F1-Score: {metrics['f1-score']* 100:.2f}%")
+
+                                                                                                                               
     return accuracy, class_metrics
 
 
-def train_model_TF_FUSION_MULTIMODAL(model, train_loader, val_loader, num_epochs, learning_rate, device):
+def train_model_TF_FUSION_MULTIMODAL(model, train_loader, val_loader, num_epochs, learning_rate, device,verbose=True, logfile=None):
     """
     Train the TransformerMultimodal model with speaker embeddings.
     """
+
+    log_file = create_logger(logfile)
     model.to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
@@ -154,8 +175,7 @@ def train_model_TF_FUSION_MULTIMODAL(model, train_loader, val_loader, num_epochs
                     item = item  
                 else:
                     raise TypeError(f"Unsupported type for item {idx}: {type(item)}")
-                processed_batch.append(item.to(device))  # Move tensor to device
-            
+                processed_batch.append(item.to(device)) 
             text, audio, video, speaker_ids, labels = processed_batch
 
             # Forward pass
@@ -166,8 +186,9 @@ def train_model_TF_FUSION_MULTIMODAL(model, train_loader, val_loader, num_epochs
             optimizer.step()
             train_loss += loss.item()
 
-        val_loss, val_accuracy, val_metrics = validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device)
+        val_loss, val_accuracy, val_metrics = validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device, verbose=verbose, logfile=logfile)
         print(f"Epoch {epoch + 1}/{num_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")
+        log_file.info(f"Epoch {epoch + 1}/{num_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")
         print(f"Validation Metrics: {val_metrics}")
 
     return model
