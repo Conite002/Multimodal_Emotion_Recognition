@@ -41,7 +41,10 @@ class TransformerMultimodal(nn.Module):
         video = video.mean(dim=1)
         video_features = self.video_encoder(video)
         
-        speaker_embeddings = self.speaker_embedding(speaker_ids) 
+        unique_speakers = sorted(set(speaker_ids.tolist()))
+        speaker_id_map = {id_: idx for idx, id_ in enumerate(unique_speakers)}
+        mapped_speaker_ids = torch.tensor([speaker_id_map[id_.item()] for id_ in speaker_ids])
+        speaker_embeddings = self.speaker_embedding(mapped_speaker_ids)
 
         text_features = text_features.view(text_features.size(0), -1)  
         audio_features = audio_features.view(audio_features.size(0), -1)  
@@ -75,7 +78,6 @@ def validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device, ve
     with torch.no_grad():
         for batch in val_loader:
             text, audio, video, speaker_ids, labels = [item.to(device) for item in batch]
-
             outputs = model(text, audio, video, speaker_ids)
             loss = criterion(outputs, labels)
             val_loss += loss.item()
@@ -87,18 +89,23 @@ def validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device, ve
             all_labels.extend(labels.cpu().tolist())
             all_predictions.extend(predicted.cpu().tolist())
 
+    unique_classes = sorted(set(all_labels + all_predictions))
+
+
     # Compute overall metrics
     val_accuracy = 100 * correct / total
-    precision = precision_score(all_labels, all_predictions, average="weighted")*100
-    recall = recall_score(all_labels, all_predictions, average="weighted")*100
-    f1 = f1_score(all_labels, all_predictions, average="weighted")*100
+    unique_classes = sorted(set(all_labels + all_predictions))
+    precision = precision_score(all_labels, all_predictions, labels=unique_classes, average="weighted", zero_division=0)*100
+    recall = recall_score(all_labels, all_predictions, labels=unique_classes, average="weighted", zero_division=0)*100
+    f1 = f1_score(all_labels, all_predictions,labels=unique_classes, average="weighted", zero_division=0)*100
     class_report = classification_report(
             all_labels,
             all_predictions,
+            labels=unique_classes,
             target_names=[f"Class {i}" for i in range(len(set(all_labels)))],
             output_dict=True
      )
-    print(f"Validation Loss: {val_loss / len(val_loader):.4f}, Val Accuracy: {val_accuracy:.2f}%, Precision: {precision:.4f}%, Recall: {recall:.4f}%, F1: {f1:.4f}%")
+    # print(f"Validation Loss: {val_loss / len(val_loader):.4f}, Val Accuracy: {val_accuracy:.2f}%, Precision: {precision:.4f}%, Recall: {recall:.4f}%, F1: {f1:.4f}%")
     # Per-class metrics
     class_metrics = classification_report(all_labels, all_predictions, target_names=[f"Class {i}" for i in range(len(set(all_labels)))], output_dict=True)
     for class_name, metrics in class_report.items():
@@ -134,15 +141,16 @@ def test_model_TF_FUSION_MULTIMODAL(model, test_loader, device):
 
     # Compute overall metrics
     accuracy = 100 * correct / total
-    precision = precision_score(all_labels, all_predictions, average="weighted")
-    recall = recall_score(all_labels, all_predictions, average="weighted")
-    f1 = f1_score(all_labels, all_predictions, average="weighted")
+    unique_classes = sorted(set(all_labels + all_predictions))
+    precision = precision_score(all_labels, all_predictions, labels=unique_classes, average="weighted")
+    recall = recall_score(all_labels, all_predictions,labels=unique_classes, average="weighted")
+    f1 = f1_score(all_labels, all_predictions,labels=unique_classes, average="weighted")
 
     # Per-class metrics
-    class_metrics = classification_report(all_labels, all_predictions, target_names=[f"Class {i}" for i in range(len(set(all_labels)))], output_dict=True)
+    unique_classes = sorted(set(all_labels + all_predictions))
+    class_metrics = classification_report(all_labels, all_predictions, labels=unique_classes, target_names=[f"Class {i}" for i in range(len(set(all_labels)))], output_dict=True, zero_division=0)
     
     print(f"Test Accuracy: {accuracy:.2f}%, Precision: {precision:.4f}, Recall: {recall:.4f}, F1: {f1:.4f}")
-    print(f"Per-Class Metrics:\n{classification_report(all_labels, all_predictions, target_names=[f'Class {i}' for i in range(len(set(all_labels)))] )}")
 
     for class_name, metrics in class_metrics.items():
         if class_name.startswith('Class'):
@@ -189,6 +197,5 @@ def train_model_TF_FUSION_MULTIMODAL(model, train_loader, val_loader, num_epochs
         val_loss, val_accuracy, val_metrics = validate_model_TF_FUSION_MULTIMODAL(model, val_loader, criterion, device, verbose=verbose, logfile=logfile)
         print(f"Epoch {epoch + 1}/{num_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")
         log_file.info(f"Epoch {epoch + 1}/{num_epochs}, Train Loss: {train_loss:.4f}, Val Loss: {val_loss:.4f}, Val Accuracy: {val_accuracy:.2f}%")
-        print(f"Validation Metrics: {val_metrics}")
-
+        log_file.info(f"Validation Metrics: {val_metrics}")
     return model
