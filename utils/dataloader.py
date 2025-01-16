@@ -5,11 +5,22 @@ from tqdm import tqdm
 from preprocessing.audio.preprocess_audio import preprocess_audio_for_model, load_audio_model
 from preprocessing.video.preprocess_video import preprocess_video_for_model, load_vit_model
 from preprocessing.text.preprocess_text import preprocess_text_for_model, load_text_model
-
+import numpy as np
+from sklearn.decomposition import PCA
 
 import os
 
-def create_data_loaders(train_path, val_path, dims, batch_size=32):
+def reduce_dimensionality(features, target_dim):
+    features_np = np.array(features)
+    if features_np.ndim == 3:
+        num_samples, time_steps, feature_dim = features_np.shape
+        features_np = features_np.reshape(num_samples, -1)
+    pca = PCA(n_components=target_dim)
+    reduced_features = pca.fit_transform(features_np)
+
+    return [reduced for reduced in reduced_features]
+
+def create_data_loaders(train_path, val_path, dims, batch_size=32, reduce_labels=None):
     """
     Create DataLoaders for training and validation with dynamic dimensions.
 
@@ -24,10 +35,22 @@ def create_data_loaders(train_path, val_path, dims, batch_size=32):
         dict: Training and validation DataLoaders for each modality.
         dict: Label mapping for class indices.
     """
-    def load_data_with_preprocessing(json_path, output_dir, save_every=200):
+    def load_data_with_preprocessing(json_path, output_dir, save_every=200, reduce_labels=None):
         with open(json_path, "r") as f:
             data = json.load(f)
         
+        print(f"Number of samples in {json_path}: {len(data)}")
+        if reduce_labels is not None:
+            data = [item for item in data if item["label"] in reduce_labels]
+
+
+        print(f"Number of samples in {json_path}: {len(data)}")
+        import pandas as pd
+        df = pd.DataFrame(data)
+        labels_unique = df["label"].unique()
+        print(f"Unique labels: {labels_unique}")
+
+
         audio_embeddings, text_embeddings, video_embeddings, labels = [], [], [], []
         processor_audio, model_audio = load_audio_model()
         tokenizer_text, model_text = load_text_model()
@@ -67,12 +90,14 @@ def create_data_loaders(train_path, val_path, dims, batch_size=32):
                         "labels": labels,
                     }, os.path.join(output_dir, f"progress_{i+1}.pt"))
                     print(f"Saved progress after {i+1} rows.")
-
+        audio_embeddings = reduce_dimensionality(audio_embeddings, dims["audio"])
+        text_embeddings = reduce_dimensionality(text_embeddings, dims["text"])
+        video_embeddings = reduce_dimensionality(video_embeddings, dims["video"])
         return audio_embeddings, video_embeddings, text_embeddings, labels
     
 
-    train_audio, train_video, train_text, train_labels = load_data_with_preprocessing(json_path=train_path, output_dir="../outputs/preprocessed/train")
-    val_audio, val_video, val_text, val_labels = load_data_with_preprocessing(json_path=val_path, output_dir="../outputs/preprocessed/val")
+    train_audio, train_video, train_text, train_labels = load_data_with_preprocessing(json_path=train_path, output_dir="../outputs/preprocessed/train", reduce_labels=reduce_labels)
+    val_audio, val_video, val_text, val_labels = load_data_with_preprocessing(json_path=val_path, output_dir="../outputs/preprocessed/val", reduce_labels=reduce_labels)
 
     label_mapping = {label: idx for idx, label in enumerate(set(train_labels + val_labels))}
     train_labels = torch.tensor([label_mapping[label] for label in train_labels], dtype=torch.long)

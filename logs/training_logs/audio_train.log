@@ -6998,3 +6998,6 @@
 2025-01-13 12:46:04,779 - INFO - Validation Recall: 0.30
 2025-01-13 12:46:04,779 - INFO - Validation F1-Score: 0.30
 2025-01-13 12:46:04,779 - INFO - Epoch 500: Train Loss = 0.0819, Val Loss = 9.9526, Val Accuracy = 30.05%, Precision = 30.59%, Recall = 30.05%, F1 = 30.22
+2025-01-16 02:22:04,007 - INFO - Starting Epoch 1/500
+2025-01-16 17:14:48,776 - INFO - Starting Epoch 1/500
+2025-01-16 17:17:32,291 - INFO - Starting Epoch 1/500
