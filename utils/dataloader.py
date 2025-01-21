@@ -90,9 +90,9 @@ def create_data_loaders(train_path, val_path, dims, batch_size=32, reduce_labels
                         "labels": labels,
                     }, os.path.join(output_dir, f"progress_{i+1}.pt"))
                     print(f"Saved progress after {i+1} rows.")
-        audio_embeddings = reduce_dimensionality(audio_embeddings, dims["audio"])
-        text_embeddings = reduce_dimensionality(text_embeddings, dims["text"])
-        video_embeddings = reduce_dimensionality(video_embeddings, dims["video"])
+        # audio_embeddings = reduce_dimensionality(audio_embeddings, dims["audio"])
+        # text_embeddings = reduce_dimensionality(text_embeddings, dims["text"])
+        # video_embeddings = reduce_dimensionality(video_embeddings, dims["video"])
         return audio_embeddings, video_embeddings, text_embeddings, labels
     
 

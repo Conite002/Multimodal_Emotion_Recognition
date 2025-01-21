@@ -13,7 +13,7 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
     """
     logger = create_logger(logfile)
 
-
+    
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
     criterion = nn.CrossEntropyLoss()

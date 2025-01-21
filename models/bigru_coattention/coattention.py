@@ -47,3 +47,58 @@ class CoAttentionFusion(nn.Module):
         x = x.mean(dim=1)
         return self.fc(x) 
     
+
+import torch
+import torch.nn as nn
+from models.bigru_coattention.bigru import BiGRUWithAttention
+
+
+class CoAttentionFusion2(nn.Module):
+    def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.3):
+        super(CoAttentionFusion, self).__init__()
+
+        # Projection layers to unify dimensions
+        self.audio_projection = nn.Linear(input_dim_audio, 128)  # Project audio to 128
+        self.text_projection = nn.Linear(input_dim_text, 256)   # Project text to 256
+        self.video_projection = nn.Linear(input_dim_video, 256) # Project video to 256
+
+        # Attention layers
+        self.audio_attention = BiGRUWithAttention(input_dim=128, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+        self.text_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+        self.video_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+
+        # Co-attention mechanism
+        self.co_attention = nn.MultiheadAttention(embed_dim=hidden_dim * 3, num_heads=8, batch_first=True)
+
+        # Layer normalization
+        self.layer_norm = nn.LayerNorm(hidden_dim * 3)
+
+        # Fully connected layers for classification
+        self.fc = nn.Sequential(
+            nn.Linear(hidden_dim * 3, 128),  # Combined feature size is hidden_dim * 3
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(128, num_classes)  # Output size is num_classes
+        )
+
+    def forward(self, audio, text, video):
+        # Project input features to fixed dimensions
+        audio_feat = self.audio_projection(audio)  # [batch_size, seq_len, 128]
+        text_feat = self.text_projection(text)     # [batch_size, seq_len, 256]
+        video_feat = self.video_projection(video)  # [batch_size, seq_len, 256]
+
+        # Apply BiGRU with attention to each modality
+        audio_feat = self.audio_attention(audio_feat)  # [batch_size, hidden_dim]
+        text_feat = self.text_attention(text_feat)     # [batch_size, hidden_dim]
+        video_feat = self.video_attention(video_feat)  # [batch_size, hidden_dim]
+
+        # Combine features
+        combined = torch.cat([audio_feat, text_feat, video_feat], dim=-1)  # [batch_size, hidden_dim * 3]
+
+        # Reshape for multi-head attention
+        combined = combined.unsqueeze(1)  # Add a sequence length of 1: [batch_size, 1, hidden_dim * 3]
+        attn_output, _ = self.co_attention(combined, combined, combined)  # Self-attention
+        x = self.layer_norm(attn_output.squeeze(1) + combined.squeeze(1))  # Residual connection and layer norm
+
+        # Classification
+        return self.fc(x)  # [batch_size, num_classes]
