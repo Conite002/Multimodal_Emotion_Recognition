@@ -6,7 +6,7 @@ import numpy as np
 from models.bigru_coattention.bigru import BiGRUWithAttention
 
 class CoAttentionFusion(nn.Module):
-    def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.3):
+    def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.6):
         super(CoAttentionFusion, self).__init__()
         self.audio_projection = nn.Linear(input_dim_audio, 256)
         self.text_projection = nn.Linear(input_dim_text, 256)
@@ -102,3 +102,77 @@ class CoAttentionFusion2(nn.Module):
 
         # Classification
         return self.fc(x)  # [batch_size, num_classes]
+
+
+import torch
+import torch.nn as nn
+
+class CoAttentionFusionReguNorm(nn.Module):
+    def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.5):
+        super(CoAttentionFusionReguNorm, self).__init__()
+
+        # Projection layers for each modality
+        self.audio_projection = nn.Linear(input_dim_audio, 256)
+        self.text_projection = nn.Linear(input_dim_text, 256)
+        self.video_projection = nn.Linear(input_dim_video, 256)
+
+        # BiGRU with attention for each modality
+        self.audio_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+        self.text_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+        self.video_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
+
+        # Multihead attention for cross-modality fusion
+        self.co_attention = nn.MultiheadAttention(embed_dim=384, num_heads=8, batch_first=True)
+        self.layer_norm = nn.LayerNorm(384)
+
+        # Fully connected layers with additional regularization and normalization
+        self.fc = nn.Sequential(
+            nn.Linear(384, 256),
+            nn.BatchNorm1d(256),  # Add BatchNorm for better generalization
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(128, num_classes)
+        )
+
+        # Regularization to prevent overfitting
+        self.audio_dropout = nn.Dropout(dropout_rate)
+        self.text_dropout = nn.Dropout(dropout_rate)
+        self.video_dropout = nn.Dropout(dropout_rate)
+
+    def forward(self, audio, text, video):
+        # Projection
+        audio_feat = self.audio_projection(audio)
+        text_feat = self.text_projection(text)
+        video_feat = self.video_projection(video)
+
+        # Dropout for modality-specific features
+        audio_feat = self.audio_dropout(audio_feat).unsqueeze(1)
+        text_feat = self.text_dropout(text_feat).unsqueeze(1)
+        video_feat = self.video_dropout(video_feat)
+
+        # Attention-based feature extraction
+        audio_feat = self.audio_attention(audio_feat)
+        text_feat = self.text_attention(text_feat)
+        video_feat = self.video_attention(video_feat)
+
+        # Global average pooling for video features
+        video_feat = video_feat.mean(dim=1, keepdim=False)  # (batch_size, hidden_dim)
+        audio_feat = audio_feat.squeeze(1)  # (batch_size, hidden_dim)
+        text_feat = text_feat.squeeze(1)  # (batch_size, hidden_dim)
+
+        # Combine features from all modalities
+        combined = torch.cat([audio_feat, text_feat, video_feat], dim=-1)  # (batch_size, 384)
+
+        # Multihead attention for cross-modal fusion
+        combined = combined.view(combined.size(0), -1, 384)
+        attn_output, _ = self.co_attention(combined, combined, combined)
+        x = self.layer_norm(attn_output + combined)  # Residual connection
+
+        # Mean pooling over sequence dimension
+        x = x.mean(dim=1)  # (batch_size, 384)
+
+        # Fully connected layers
+        return self.fc(x)

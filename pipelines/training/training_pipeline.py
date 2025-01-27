@@ -61,13 +61,28 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
 # --------------------------------------------------------------------------------------------------------------------------
 # train_model_coattention
 # --------------------------------------------------------------------------------------------------------------------------
-def train_model_coattention(model, train_loader, val_loader, num_epochs, learning_rate, device, modal=None, logfile="training.log", verbose=True, num_classes=7):
+
+def train_model_coattention(model, train_loader, val_loader, num_epochs, learning_rate, device=None, modal=None, logfile="training.log", verbose=True, num_classes=7, save_model=None):
     device = device or ("cuda" if torch.cuda.is_available() else "cpu")
     model.to(device)
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-    logger = create_logger(logfile)
     
+    # Define criterion with class weights if needed
+    criterion = nn.CrossEntropyLoss()
+    
+    # Optimizer with weight decay (regularization)
+    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)
+
+    # Learning rate scheduler
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=True)
+
+    # Logger for training details
+    logger = create_logger(logfile)
+
+    best_val_loss = float('inf')
+    best_model_state = None
+    early_stopping_patience = 10
+    epochs_without_improvement = 0
+
     for epoch in range(num_epochs):
         model.train()
         train_loss = 0.0
@@ -84,14 +99,38 @@ def train_model_coattention(model, train_loader, val_loader, num_epochs, learnin
             optimizer.step()
             train_loss += loss.item()
 
+        # Evaluate on validation set
         val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coattention(
             model, val_loader, criterion, device, verbose=False, num_classes=num_classes, logfile=logfile
         )
+
+        # Step the scheduler
+        scheduler.step(val_loss)
+
+        # Save the best model
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            best_model_state = model.state_dict()
+            epochs_without_improvement = 0
+        else:
+            epochs_without_improvement += 1
 
         print(
             f"Epoch {epoch + 1}: Train Loss = {train_loss / len(train_loader):.4f}, "
             f"Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%, "
             f"Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}"
         )
+
+        # Early stopping
+        if epochs_without_improvement >= early_stopping_patience:
+            print(f"Early stopping at epoch {epoch + 1}")
+            logger.info(f"Early stopping at epoch {epoch + 1}")
+            break
+
+    # Load and save the best model
+    if best_model_state:
+        model.load_state_dict(best_model_state)
+        torch.save(model.state_dict(), save_model)
+        logger.info("Best model saved with validation loss: {:.4f}".format(best_val_loss))
 
     return model
