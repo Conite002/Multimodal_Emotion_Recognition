@@ -1,12 +1,11 @@
 import torch
 import logging
 from utils.logger import create_logger
-
-
-import torch
-import logging
-from utils.logger import create_logger
 from sklearn.metrics import precision_score, recall_score, f1_score
+from sklearn.metrics import precision_recall_fscore_support
+from tqdm import tqdm
+
+
 
 def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log", verbose=True):
     """
@@ -186,3 +185,28 @@ def evaluate_model_coattention(model, val_loader, criterion, device, verbose=Tru
         print(f"Validation Metrics: Loss = {val_loss / len(val_loader):.4f}, Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
     logfile.info(f"Validation Loss: {val_loss / len(val_loader):.4f}, Validation Accuracy: {val_accuracy:.2f}%, Precision: {precision:.2f}, Recall: {recall:.2f}, F1: {f1:.2f}")
     return val_loss / len(val_loader), val_accuracy, precision, recall, f1, class_accuracies
+
+
+
+
+def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbose=True, num_classes=7, logfile="evaluation_log_graph_coattention"):
+    model.eval()
+    total_loss, total_correct, total_samples = 0.0, 0, 0
+    all_labels, all_predictions = [], []
+    with torch.no_grad():
+        for batch in tqdm(val_loader, desc="Evaluating"):
+            audio, text, video, graph_features, labels = [item.to(device) for item in batch]
+            outputs = model(audio, text, video, graph_features)
+            loss = criterion(outputs, labels)
+            total_loss += loss.item()
+            total_correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
+            total_samples += labels.size(0)
+            all_labels.extend(labels.cpu().numpy())
+            all_predictions.extend(torch.argmax(outputs, dim=1).cpu().numpy())
+    val_accuracy = total_correct / total_samples
+    precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_predictions, average='weighted')
+    if verbose:
+        print(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
+    logger = create_logger(logfile)
+    logger.info(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
+    return total_loss / len(val_loader), val_accuracy, precision, recall, f1, total_correct / total_samples

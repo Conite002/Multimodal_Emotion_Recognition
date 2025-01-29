@@ -128,3 +128,45 @@ def extract_tensors_from_tensordataset(tensor_dataset):
     for item in tensor_dataset:
         features.append(item[0])
     return torch.stack(features)
+
+
+from torch.utils.data import Dataset
+
+class MultimodalGraphDataset(Dataset):
+    def __init__(self, audio, text, video, labels, graph_features):
+        self.audio = audio
+        self.text = text
+        self.video = video
+        self.labels = labels
+        self.graph_features = graph_features    
+    def __len__(self):
+        return len(self.labels)
+    def __getitem__(self, idx):
+        return self.audio[idx], self.text[idx], self.video[idx], self.graph_features[idx], self.labels[idx]
+    
+def create_dataloader_with_graph_features(data):
+    train_dataset = MultimodalGraphDataset(
+        audio=data["train"]["audio"],
+        text=data["train"]["text"],
+        video=data["train"]["video"],
+        labels=data["train"]["labels"],
+        graph_features=data["train"]["graph_features"]
+    )
+    val_dataset = MultimodalGraphDataset(
+        audio=data["val"]["audio"],
+        text=data["val"]["text"],
+        video=data["val"]["video"],
+        labels=data["val"]["labels"],
+        graph_features=data["val"]["graph_features"]
+    )
+    test_dataset = MultimodalGraphDataset(
+        audio=data["test"]["audio"],
+        text=data["test"]["text"],
+        video=data["test"]["video"],
+        labels=data["test"]["labels"],
+        graph_features=data["test"]["graph_features"]
+    )
+    train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    val_loader = DataLoader(val_dataset, batch_size=32)
+    test_loader = DataLoader(test_dataset, batch_size=32)
+    return train_loader, val_loader, test_loader
