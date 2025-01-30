@@ -63,75 +63,25 @@ def train_model(model, train_loader, val_loader, num_epochs, learning_rate, devi
 # --------------------------------------------------------------------------------------------------------------------------
 # train_model_coattention
 # --------------------------------------------------------------------------------------------------------------------------
+import torch
+import torch.optim as optim
+import torch.nn as nn
+from tqdm import tqdm
+import os
 
-def train_model_coattention(model, train_loader, val_loader, num_epochs, learning_rate, device=None, modal=None, logfile="training.log", verbose=True, num_classes=7, save_model=None):
-    device = device or ("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
-    
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=True)
-    logger = create_logger(logfile)
-
-    best_val_loss = float('inf')
-    best_model_state = None
-    early_stopping_patience = 10
-    epochs_without_improvement = 0
-
-    for epoch in range(num_epochs):
-        model.train()
-        train_loss = 0.0
-        logger.info(f"Starting Epoch {epoch + 1}/{num_epochs}")
-        for batch in tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} - Training"):
-            audio, text, video, labels = [item.to(device) for item in batch]
-            optimizer.zero_grad()
-            outputs = model(audio, text, video)
-            loss = criterion(outputs, labels)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item()
-
-        val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coattention(
-            model, val_loader, criterion, device, verbose=False, num_classes=num_classes, logfile=logfile
-        )
-
-        scheduler.step(val_loss)
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            best_model_state = model.state_dict()
-            epochs_without_improvement = 0
-        else:
-            epochs_without_improvement += 1
-
-        print(
-            f"Epoch {epoch + 1}: Train Loss = {train_loss / len(train_loader):.4f}, "
-            f"Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%, "
-            f"Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}"
-        )
-
-        if epochs_without_improvement >= early_stopping_patience:
-            print(f"Early stopping at epoch {epoch + 1}")
-            logger.info(f"Early stopping at epoch {epoch + 1}")
-            break
-
-    if best_model_state:
-        model.load_state_dict(best_model_state)
-        torch.save(model.state_dict(), save_model)
-        logger.info("Best model saved with validation loss: {:.4f}".format(best_val_loss))
-
-    return model
-
-
-def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1e-3, logfile="training_log_graph_coattention.log", num_classes=7, model_name='best_model_graph_coattention.pth', verbose=True):
+def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1e-3, logfile="training_log_graph_coattention.log", num_classes=7, nodes_edges=None, model_name='best_model_graph_coattention.pth', verbose=True):
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
+    nodes_edges = {key: {k: v.to(device) for k, v in value.items()} for key, value in nodes_edges.items()}
+
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10, verbose=True)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
     logger = create_logger(logfile)
+
     best_val_loss = float('inf')
-    best_model_state = None
+    best_model_path = model_name  # Chemin du meilleur modèle
     early_stopping_patience = 10
     epochs_without_improvement = 0
 
@@ -139,43 +89,60 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
         model.train()
         total_loss, total_correct, total_samples = 0.0, 0, 0
         logger.info(f"Starting Epoch {epoch + 1}/{num_epochs}")
+        
         for batch in tqdm(train_loader, desc=f"Epoch {epoch + 1}/{num_epochs} - Training"):
-            audio, text, video, graph_features, labels = [item.to(device) for item in batch]
+            audio, text, video, labels, batch_speaker_ids = [item.to(device) for item in batch]
             optimizer.zero_grad()
-            outputs = model(audio, text, video, graph_features)
+            
+            outputs = model(
+                audio, text, video, 
+                node_features=nodes_edges['node_features']['train'], 
+                edge_index=nodes_edges['edge_index']['train'], 
+                batch_speaker_ids=batch_speaker_ids
+            )
+
             loss = criterion(outputs, labels)
-            loss.backward()
+            loss.backward(retain_graph=True)
             optimizer.step()
+
             total_loss += loss.item()
             total_correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
             total_samples += labels.size(0)
         
-        val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coattention_graph(
-            model, val_loader, criterion, device, verbose=False, num_classes=num_classes, logfile=logfile
-        )
         train_accuracy = total_correct / total_samples
+        val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coattention_graph(
+            model, val_loader, criterion, device, num_classes=num_classes, logfile=logfile,
+            node_features=nodes_edges['node_features']['val'], edge_index=nodes_edges['edge_index']['val'], verbose=verbose
+        )
+        
         scheduler.step(val_loss)
+
+        val_accuracy *= 100
+        precision *= 100
+        recall *= 100
+        f1 *= 100
+
+        print(
+            f"Epoch => {epoch + 1}: Train Loss = {total_loss / len(train_loader):.4f}, "
+            f"Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%, "
+            f"Precision = {precision:.2f}%, Recall = {recall:.2f}%, F1 = {f1:.2f}%"
+        )
+
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            best_model_state = model.state_dict()
+            torch.save(model.state_dict(), best_model_path)
+            logger.info(f"Best model saved at epoch {epoch + 1} with val loss: {val_loss:.4f}")
             epochs_without_improvement = 0
         else:
             epochs_without_improvement += 1
-
-        print(
-            f"Epoch {epoch + 1}: Train Loss = {total_loss / len(train_loader):.4f}, "
-            f"Val Loss = {val_loss:.4f}, Val Accuracy = {val_accuracy:.2f}%, "
-            f"Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}"
-        )
 
         if epochs_without_improvement >= early_stopping_patience:
             print(f"Early stopping at epoch {epoch + 1}")
             logger.info(f"Early stopping at epoch {epoch + 1}")
             break
 
-    if best_model_state:
-        model.load_state_dict(best_model_state)
-        torch.save(model.state_dict(), model_name)
-        logger.info("Best model saved with validation loss: {:.4f}".format(best_val_loss))
+    if os.path.exists(best_model_path):
+        model.load_state_dict(torch.load(best_model_path, map_location=device))
+        logger.info(f"Loaded best model with val loss: {best_val_loss:.4f}")
 
     return model

@@ -14,39 +14,37 @@ class SpeakerAttention(nn.Module):
         
 
 def get_speaker_node_features(data):
-
     node_features = {}
-    attention_layer = SpeakerAttention(input_dim=2304) 
-    for split in ['train', 'val', 'test']:
-        audio_data = data[split]['audio'].tensors[0] 
-        text_data = data[split]['text'].tensors[0]    
-        video_data = data[split]['video'].tensors[0]  
-        speaker_ids = data[split]['speaker']          
+    attention_layer = SpeakerAttention(input_dim=2304)
 
-        num_samples = audio_data.shape[0] 
+    for split in ['train', 'val', 'test']:
+        audio_data = data[split]['audio'].tensors[0]
+        text_data = data[split]['text'].tensors[0]
+        video_data = data[split]['video'].tensors[0]
+        speaker_ids = data[split]['speaker']
+
+        num_samples = audio_data.shape[0]
         unique_speakers = torch.unique(speaker_ids)
         speaker_node_features = []
 
         for speaker in unique_speakers:
             speaker_indices = (speaker_ids == speaker).nonzero(as_tuple=True)[0]
-            speaker_indices = speaker_indices[speaker_indices < num_samples]  
-            if len(speaker_indices) == 0:  
+            speaker_indices = speaker_indices[speaker_indices < num_samples]
+
+            if len(speaker_indices) == 0:
                 continue
 
-            speaker_audio = audio_data[speaker_indices]  
-            speaker_text = text_data[speaker_indices]    
-            speaker_video = video_data[speaker_indices]  
-
-            speaker_video = speaker_video.mean(dim=1) 
-
-            speaker_features = torch.cat([speaker_audio, speaker_text, speaker_video], dim=-1) 
-            speaker_representation = attention_layer(speaker_features) 
+            speaker_audio = audio_data[speaker_indices]
+            speaker_text = text_data[speaker_indices]
+            speaker_video = video_data[speaker_indices].mean(dim=1) 
+            speaker_features = torch.cat([speaker_audio, speaker_text, speaker_video], dim=-1)
+            speaker_representation = attention_layer(speaker_features)
             speaker_node_features.append(speaker_representation)
 
         if speaker_node_features:
-            node_features[split] = torch.stack(speaker_node_features)  
+            node_features[split] = torch.stack(speaker_node_features)
         else:
-            node_features[split] = torch.empty((0, 2304)) 
+            node_features[split] = torch.empty((0, 2304))
 
     return node_features
      

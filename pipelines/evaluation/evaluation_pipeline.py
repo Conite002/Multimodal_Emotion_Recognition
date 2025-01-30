@@ -189,14 +189,14 @@ def evaluate_model_coattention(model, val_loader, criterion, device, verbose=Tru
 
 
 
-def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbose=True, num_classes=7, logfile="evaluation_log_graph_coattention"):
+def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbose=True, num_classes=7, logfile="evaluation_log_graph_coattention", node_features=None, edge_index=None):
     model.eval()
     total_loss, total_correct, total_samples = 0.0, 0, 0
     all_labels, all_predictions = [], []
     with torch.no_grad():
         for batch in tqdm(val_loader, desc="Evaluating"):
-            audio, text, video, graph_features, labels = [item.to(device) for item in batch]
-            outputs = model(audio, text, video, graph_features)
+            audio, text, video, labels, batch_speaker_ids = [item.to(device) for item in batch]
+            outputs = model(audio, text, video,  node_features=node_features, edge_index=edge_index, batch_speaker_ids=batch_speaker_ids)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
             total_correct += (torch.argmax(outputs, dim=1) == labels).sum().item()
