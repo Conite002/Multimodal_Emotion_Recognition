@@ -1014,3 +1014,29 @@
 2025-01-31 17:12:57,852 - INFO - Starting Epoch 6/30
 2025-01-31 17:13:43,549 - INFO - Val Loss = 1.3409, Val Accuracy = 0.58%, Precision = 0.53, Recall = 0.58, F1 = 0.54
 2025-01-31 17:13:43,549 - INFO - Starting Epoch 7/30
+2025-01-31 17:14:29,444 - INFO - Val Loss = 1.3326, Val Accuracy = 0.58%, Precision = 0.53, Recall = 0.58, F1 = 0.54
+2025-01-31 17:14:29,445 - INFO - Starting Epoch 8/30
+2025-01-31 17:15:14,828 - INFO - Val Loss = 1.3181, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
+2025-01-31 17:15:14,872 - INFO - Best model saved at epoch 8 with val loss: 1.3181
+2025-01-31 17:15:14,872 - INFO - Starting Epoch 9/30
+2025-01-31 17:16:00,306 - INFO - Val Loss = 1.3308, Val Accuracy = 0.58%, Precision = 0.53, Recall = 0.58, F1 = 0.54
+2025-01-31 17:16:00,308 - INFO - Starting Epoch 10/30
+2025-01-31 17:16:45,688 - INFO - Val Loss = 1.3249, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.54
+2025-01-31 17:16:45,689 - INFO - Starting Epoch 11/30
+2025-01-31 17:17:31,612 - INFO - Val Loss = 1.3607, Val Accuracy = 0.57%, Precision = 0.53, Recall = 0.57, F1 = 0.53
+2025-01-31 17:17:31,613 - INFO - Starting Epoch 12/30
+2025-01-31 17:18:17,075 - INFO - Val Loss = 1.3723, Val Accuracy = 0.56%, Precision = 0.53, Recall = 0.56, F1 = 0.53
+2025-01-31 17:18:17,077 - INFO - Starting Epoch 13/30
+2025-01-31 17:19:02,394 - INFO - Val Loss = 1.3949, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.53
+2025-01-31 17:19:02,395 - INFO - Starting Epoch 14/30
+2025-01-31 17:19:47,550 - INFO - Val Loss = 1.3882, Val Accuracy = 0.57%, Precision = 0.53, Recall = 0.57, F1 = 0.53
+2025-01-31 17:19:47,551 - INFO - Starting Epoch 15/30
+2025-01-31 17:20:33,246 - INFO - Val Loss = 1.3203, Val Accuracy = 0.57%, Precision = 0.53, Recall = 0.57, F1 = 0.54
+2025-01-31 17:20:33,247 - INFO - Starting Epoch 16/30
+2025-01-31 17:21:19,041 - INFO - Val Loss = 1.3410, Val Accuracy = 0.57%, Precision = 0.53, Recall = 0.57, F1 = 0.54
+2025-01-31 17:21:19,042 - INFO - Starting Epoch 17/30
+2025-01-31 17:22:04,633 - INFO - Val Loss = 1.3468, Val Accuracy = 0.56%, Precision = 0.52, Recall = 0.56, F1 = 0.53
+2025-01-31 17:22:04,634 - INFO - Starting Epoch 18/30
+2025-01-31 17:22:49,734 - INFO - Val Loss = 1.3307, Val Accuracy = 0.57%, Precision = 0.53, Recall = 0.57, F1 = 0.54
+2025-01-31 17:22:49,734 - INFO - Early stopping at epoch 18
+2025-01-31 17:22:49,766 - INFO - Loaded best model with val loss: 1.3181
