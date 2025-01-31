@@ -206,7 +206,7 @@ def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbo
     val_accuracy = total_correct / total_samples
     precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_predictions, average='weighted')
     if verbose:
-        print(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
+        print(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy * 100:.2f}%, Precision = {precision * 100:.2f}%, Recall = {recall * 100:.2f}%, F1 = {f1 * 100:.2f}%")
     logger = create_logger(logfile)
     logger.info(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
     return total_loss / len(val_loader), val_accuracy, precision, recall, f1, total_correct / total_samples

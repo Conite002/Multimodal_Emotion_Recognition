@@ -9,6 +9,14 @@ from models.graph.graph import GraphConstructor
 from utils.dataloader import create_dataloader_with_graph_features
 from models.bigru_coattention.coattention import CoAttentionFusionWithGraph
 from pipelines.training.training_pipeline import train_coattention_graph
+import random
+
+
+torch.manual_seed(0)          
+torch.cuda.manual_seed(0)       
+torch.cuda.manual_seed_all(0)   
+np.random.seed(0)               
+random.seed(0)                  
 
 
 
@@ -87,17 +95,17 @@ train_coattention_graph(
     model,
     train_loaders,
     val_loaders,
-    num_epochs=20,
+    num_epochs=30,
     lr=1e-3,
     verbose=False,
-    logfile="coattention_graph_2.log",
-    model_name='best_model_graph_coattention_2.pth',
+    logfile="coattention_graph_2_aug_audio.log",
+    model_name='best_model_graph_coattention_2_aug_audio.pth',
     num_classes=7,
     nodes_edges=nodes_edges
 )
 
 # load the best model
-model.load_state_dict(torch.load(os.path.join("best_model_graph_coattention_2.pth")))
+model.load_state_dict(torch.load(os.path.join("best_model_graph_coattention_2_aug_audio.pth")))
 
 # evaluate the model
 from pipelines.evaluation.evaluation_pipeline import evaluate_model_coattention_graph
@@ -107,10 +115,14 @@ val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coatt
     nn.CrossEntropyLoss(),
     device,
     num_classes=7,
-    logfile="evaluation_log_graph_coattention",
+    logfile="evaluation_log_graph_coattention__sampler",
     node_features=nodes_edges['node_features']['test'],
     edge_index=nodes_edges['edge_index']['test'],
     verbose=True
 )
 print(f"Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_accuracy * 100:.2f}%, Precision: {precision * 100:.2f}%, Recall: {recall * 100:.2f}%, F1: {f1 * 100:.2f}%")
+
+# Plot Accuracy, Precision, Recall, F1 for test, val
+import matplotlib.pyplot as plt
+import numpy as np
 

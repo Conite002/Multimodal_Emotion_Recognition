@@ -76,7 +76,7 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
     nodes_edges = {key: {k: v.to(device) for k, v in value.items()} for key, value in nodes_edges.items()}
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=lr)
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
     logger = create_logger(logfile)
 

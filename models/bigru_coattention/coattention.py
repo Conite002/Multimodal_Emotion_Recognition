@@ -25,11 +25,14 @@ class CoAttentionFusion(nn.Module):
         self.layer_norm = nn.LayerNorm(384)
 
         self.fc = nn.Sequential(
-            nn.Linear(384, 128),
+            nn.Linear(128, 64),
             nn.ReLU(),
-            nn.Dropout(dropout_rate),
-            nn.Linear(128, num_classes)
+            nn.Dropout(0.6), 
+            nn.Linear(64, num_classes)
         )
+        # self.fc = nn.Sequential(
+        #     nn.Linear(128, num_classes),
+        # )
     def forward(self, audio, text, video):
         audio_feat = self.audio_projection(audio).unsqueeze(1)
         text_feat = self.text_projection(text).unsqueeze(1) 
@@ -78,7 +81,7 @@ class CoAttentionFusionWithGraph(nn.Module):
         )
 
 
-        # self.attn_projection = nn.Linear(896, 384)  
+        # self.attn_projection = nn.Linear(896, 384)
         self.attn_projection = nn.Linear(768, 384)  
     def forward(self, audio, text, video, node_features, edge_index, batch_speaker_ids):
         device = audio.device
@@ -93,13 +96,12 @@ class CoAttentionFusionWithGraph(nn.Module):
         text_feat = self.text_attention(text_feat).squeeze(1)
         video_feat = self.video_attention(video_feat).mean(dim=1, keepdim=False)
         
-        
         combined = torch.cat([ audio_feat, text_feat, video_feat], dim=-1)
         graph_features = self.graph_constructor(node_features, edge_index)
         graph_output = self.grnn(graph_features, edge_index)
 
         graph_output = (graph_output - graph_output.mean()) / graph_output.std()
-        graph_output = graph_output * 0.1
+        graph_output = graph_output * 0.05
         
         if batch_speaker_ids.max() >= graph_output.shape[0]:
             raise IndexError(f"batch_speaker_ids contient un indice hors limite ! Max: {graph_output.shape[0]-1}, Trouvé: {batch_speaker_ids.max()}")
@@ -110,6 +112,7 @@ class CoAttentionFusionWithGraph(nn.Module):
         # print(f"Combined: {combined.shape}") # Combined: torch.Size([32, 2, 128])
         # print(f" batch_graph_features: {batch_graph_features.shape}") #   torch.Size([32, 128])
         batch_graph_features = batch_graph_features.unsqueeze(1)
+        
         combined = torch.cat([combined, batch_graph_features], dim=1)
         # combine features from all modalities and graph features (combined batch_graph_features)
         attn_output, _ = self.co_attention(combined, combined, combined)
@@ -138,26 +141,26 @@ class CoAttentionFusion2(nn.Module):
         self.text_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
         self.video_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
 
-        self.co_attention = nn.MultiheadAttention(embed_dim=hidden_dim * 3, num_heads=8, batch_first=True)
+        self.co_attention = nn.MultiheadAttention(embed_dim=hidden_dim * 3, num_heads=4, batch_first=True)
 
         self.layer_norm = nn.LayerNorm(hidden_dim * 3)
 
         self.fc = nn.Sequential(
-            nn.Linear(hidden_dim * 3, 128),  # Combined feature size is hidden_dim * 3
+            nn.Linear(hidden_dim * 3, 128), 
             nn.ReLU(),
             nn.Dropout(dropout_rate),
-            nn.Linear(128, num_classes)  # Output size is num_classes
+            nn.Linear(128, num_classes) 
         )
 
     def forward(self, audio, text, video):
         # Project input features to fixed dimensions
-        audio_feat = self.audio_projection(audio)  # [batch_size, seq_len, 128]
-        text_feat = self.text_projection(text)     # [batch_size, seq_len, 256]
-        video_feat = self.video_projection(video)  # [batch_size, seq_len, 256]
+        audio_feat = self.audio_projection(audio)   
+        text_feat = self.text_projection(text)      
+        video_feat = self.video_projection(video)   
 
-        audio_feat = self.audio_attention(audio_feat)  # [batch_size, hidden_dim]
-        text_feat = self.text_attention(text_feat)     # [batch_size, hidden_dim]
-        video_feat = self.video_attention(video_feat)  # [batch_size, hidden_dim]
+        audio_feat = self.audio_attention(audio_feat)  
+        text_feat = self.text_attention(text_feat)     
+        video_feat = self.video_attention(video_feat)  
 
         combined = torch.cat([audio_feat, text_feat, video_feat], dim=-1)
 
