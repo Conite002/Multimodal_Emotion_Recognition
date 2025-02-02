@@ -76,13 +76,13 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
     nodes_edges = {key: {k: v.to(device) for k, v in value.items()} for key, value in nodes_edges.items()}
 
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4)
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-3)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
     logger = create_logger(logfile)
 
     best_val_loss = float('inf')
-    best_model_path = model_name  # Chemin du meilleur modèle
-    early_stopping_patience = 10
+    best_model_path = model_name
+    early_stopping_patience = 5
     epochs_without_improvement = 0
 
     for epoch in range(num_epochs):
@@ -98,6 +98,7 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
                 audio, text, video, 
                 node_features=nodes_edges['node_features']['train'], 
                 edge_index=nodes_edges['edge_index']['train'], 
+                edge_type=nodes_edges['edge_type']['train'],
                 batch_speaker_ids=batch_speaker_ids
             )
 
@@ -112,7 +113,9 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
         train_accuracy = total_correct / total_samples
         val_loss, val_accuracy, precision, recall, f1, accuracies = evaluate_model_coattention_graph(
             model, val_loader, criterion, device, num_classes=num_classes, logfile=logfile,
-            node_features=nodes_edges['node_features']['val'], edge_index=nodes_edges['edge_index']['val'], verbose=verbose
+            node_features=nodes_edges['node_features']['val'], edge_index=nodes_edges['edge_index']['val'], 
+            edge_type=nodes_edges['edge_type']['val'],
+            verbose=verbose
         )
         
         scheduler.step(val_loss)

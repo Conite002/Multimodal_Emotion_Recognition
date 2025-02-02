@@ -7,6 +7,7 @@ from preprocessing.video.preprocess_video import preprocess_video_for_model, loa
 from preprocessing.text.preprocess_text import preprocess_text_for_model, load_text_model
 import numpy as np
 from sklearn.decomposition import PCA
+from torch.utils.data import Dataset
 
 import os
 
@@ -130,7 +131,6 @@ def extract_tensors_from_tensordataset(tensor_dataset):
     return torch.stack(features)
 
 
-from torch.utils.data import Dataset
 
 
 def create_weighted_sampler(labels):

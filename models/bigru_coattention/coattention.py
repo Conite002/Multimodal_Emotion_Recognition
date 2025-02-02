@@ -30,6 +30,7 @@ class CoAttentionFusion(nn.Module):
             nn.Dropout(0.6), 
             nn.Linear(64, num_classes)
         )
+        
         # self.fc = nn.Sequential(
         #     nn.Linear(128, num_classes),
         # )
@@ -57,75 +58,106 @@ class CoAttentionFusion(nn.Module):
     
 
 
+import torch
+import torch.nn as nn
+from torch_geometric.nn import GATConv, RGCNConv, global_add_pool
 
 class CoAttentionFusionWithGraph(nn.Module):
     def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.6, num_speakers=100):
         super(CoAttentionFusionWithGraph, self).__init__()
 
+        # **Projections Initiales**
         self.audio_projection = nn.Linear(input_dim_audio, 256)
         self.text_projection = nn.Linear(input_dim_text, 256)
         self.video_projection = nn.Linear(input_dim_video, 256)
 
+        # **LSTM pour Chaque Modalité**
         self.audio_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
         self.text_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
         self.video_attention = BiGRUWithAttention(input_dim=256, hidden_dim=hidden_dim, dropout_rate=dropout_rate)
 
+        self.audio_lstm = nn.LSTM(256, hidden_dim, bidirectional=True, batch_first=True)
+        self.text_lstm = nn.LSTM(256, hidden_dim, bidirectional=True, batch_first=True)
+        self.video_lstm = nn.LSTM(256, hidden_dim, bidirectional=True, batch_first=True)
+
+        # **Graph Construction et Propagation**
         self.graph_constructor = GraphConstructor(input_dim=2304, hidden_dim=hidden_dim)
         self.grnn = GRNN(input_dim=hidden_dim, hidden_dim=hidden_dim)
 
-        self.co_attention = nn.MultiheadAttention(embed_dim=128, num_heads=8, batch_first=True)
-        self.layer_norm = nn.LayerNorm(128)
+        # **Fusion Multimodale**
+        self.fusion_projection = nn.Linear(896, 256)  # 128 * 3 (modalités) + 128 (graphe)
+        self.global_bilstm = nn.LSTM(256, hidden_dim, bidirectional=True, batch_first=True)
 
+        # **Co-Attention**
+        self.co_attention = nn.MultiheadAttention(embed_dim=hidden_dim * 2, num_heads=4, batch_first=True)
+        self.layer_norm = nn.LayerNorm(hidden_dim * 2)
+
+        # **Classification Finale**
         self.fc = nn.Sequential(
-            nn.Linear(128, num_classes)
+            nn.Linear(hidden_dim * 2, 128),
+            nn.ReLU(),
+            nn.Dropout(dropout_rate),
+            nn.Linear(128, num_classes)            
         )
+        self.modality_weights = nn.Parameter(torch.ones(3))
 
+    def forward(self, audio, text, video, node_features, edge_index, edge_type, batch_speaker_ids):
 
-        # self.attn_projection = nn.Linear(896, 384)
-        self.attn_projection = nn.Linear(768, 384)  
-    def forward(self, audio, text, video, node_features, edge_index, batch_speaker_ids):
         device = audio.device
         node_features = node_features.to(device)
         edge_index = edge_index.to(device)
 
+        # **1️⃣ Projection des features**
         audio_feat = self.audio_projection(audio).unsqueeze(1)
         text_feat = self.text_projection(text).unsqueeze(1)
         video_feat = self.video_projection(video)
 
+        # **2️⃣ Extraction avec BiGRU**
         audio_feat = self.audio_attention(audio_feat).squeeze(1)
         text_feat = self.text_attention(text_feat).squeeze(1)
         video_feat = self.video_attention(video_feat).mean(dim=1, keepdim=False)
-        
-        combined = torch.cat([ audio_feat, text_feat, video_feat], dim=-1)
+
+        # **3️⃣ Appliquer BiLSTM Individuel**
+        audio_feat, _ = self.audio_lstm(audio_feat.unsqueeze(1))
+        text_feat, _ = self.text_lstm(text_feat.unsqueeze(1))
+        video_feat, _ = self.video_lstm(video_feat.unsqueeze(1))
+
+        audio_feat = audio_feat.mean(dim=1)
+        text_feat = text_feat.mean(dim=1)
+        video_feat = video_feat.mean(dim=1)
+
+        # **4️⃣ Propagation Graphique**
         graph_features = self.graph_constructor(node_features, edge_index)
-        graph_output = self.grnn(graph_features, edge_index)
+        graph_output = self.grnn(graph_features, edge_index, edge_type)
 
         graph_output = (graph_output - graph_output.mean()) / graph_output.std()
-        graph_output = graph_output * 0.05
-        
+        graph_output = graph_output * 0.05  # Augmenter l'impact du graphe
+
+        # Sélection des features des speakers
         if batch_speaker_ids.max() >= graph_output.shape[0]:
             raise IndexError(f"batch_speaker_ids contient un indice hors limite ! Max: {graph_output.shape[0]-1}, Trouvé: {batch_speaker_ids.max()}")
+
         batch_graph_features = graph_output[batch_speaker_ids]
-        # combined = torch.cat([combined, batch_graph_features], dim=-1)  
-        # combined = self.attn_projection(combined)
-        combined = combined.view(combined.size(0), -1, 128)
-        # print(f"Combined: {combined.shape}") # Combined: torch.Size([32, 2, 128])
-        # print(f" batch_graph_features: {batch_graph_features.shape}") #   torch.Size([32, 128])
-        batch_graph_features = batch_graph_features.unsqueeze(1)
-        
-        combined = torch.cat([combined, batch_graph_features], dim=1)
-        # combine features from all modalities and graph features (combined batch_graph_features)
-        attn_output, _ = self.co_attention(combined, combined, combined)
-        x = self.layer_norm(attn_output + combined)
-        x = x.mean(dim=1)
-        x = self.fc(x) 
+
+        # **5️⃣ Fusion Multimodale**
+        combined = torch.cat([audio_feat, text_feat, video_feat, batch_graph_features], dim=-1)
+        combined = self.fusion_projection(combined)
+        combined = combined.unsqueeze(1)
+
+        # **6️⃣ Appliquer `BiLSTM` Global**
+        combined, _ = self.global_bilstm(combined)
+        combined = combined.mean(dim=1)
+
+        # **7️⃣ Co-Attention sur la Fusion**
+        attn_output, _ = self.co_attention(combined.unsqueeze(1), combined.unsqueeze(1), combined.unsqueeze(1))
+        combined = self.layer_norm(attn_output.squeeze(1) + combined)
+
+        # **8️⃣ Classification Finale**
+        x = self.fc(combined)
+
         return x
 
 
-
-
-import torch
-import torch.nn as nn
 from models.bigru_coattention.bigru import BiGRUWithAttention
 
 
@@ -153,7 +185,6 @@ class CoAttentionFusion2(nn.Module):
         )
 
     def forward(self, audio, text, video):
-        # Project input features to fixed dimensions
         audio_feat = self.audio_projection(audio)   
         text_feat = self.text_projection(text)      
         video_feat = self.video_projection(video)   
@@ -170,9 +201,6 @@ class CoAttentionFusion2(nn.Module):
 
         return self.fc(x)  
 
-
-import torch
-import torch.nn as nn
 
 class CoAttentionFusionReguNorm(nn.Module):
     def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128, dropout_rate=0.5):
