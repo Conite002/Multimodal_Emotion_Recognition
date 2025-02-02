@@ -55,3 +55,4 @@
 2025-02-02 10:57:58,310 - INFO - Val Loss = 1.1315, Val Accuracy = 0.62%, Precision = 0.58, Recall = 0.62, F1 = 0.58
 2025-02-02 14:22:14,353 - INFO - Val Loss = 1.1328, Val Accuracy = 0.61%, Precision = 0.53, Recall = 0.61, F1 = 0.57
 2025-02-02 14:54:04,787 - INFO - Val Loss = 1.1515, Val Accuracy = 0.62%, Precision = 0.54, Recall = 0.62, F1 = 0.57
+2025-02-02 16:39:15,512 - INFO - Val Loss = 1.1604, Val Accuracy = 0.61%, Precision = 0.55, Recall = 0.61, F1 = 0.56

@@ -42,21 +42,6 @@ class GraphConstructor(nn.Module):
         x, _ = self.gru(x.unsqueeze(1))  
         return x.squeeze(1)
 
-def forward_push(edge_index, node_features, alpha=0.1, num_iterations=3):
-    num_nodes = node_features.shape[0]
-    adj_matrix = torch.zeros((num_nodes, num_nodes), device=node_features.device)
-    adj_matrix[edge_index[0], edge_index[1]] = 1
-
-    degree = adj_matrix.sum(dim=1, keepdim=True)
-    degree[degree == 0] = 1
-    adj_matrix = adj_matrix / degree
-
-    for _ in range(num_iterations):
-        node_features = alpha * torch.matmul(adj_matrix, node_features) + (1 - alpha) * node_features
-
-    return node_features
-
-
 class GRNN(nn.Module):
     def __init__(self, input_dim, hidden_dim):
         super(GRNN, self).__init__()
@@ -85,8 +70,6 @@ class GRNN(nn.Module):
         x = torch.matmul(propagation_matrix, x)
         return x
         # return pooled_x
-
-
 
 # def batch_graphify(lengths, n_modals=1, edge_multi=True, edge_temp=True, P=2, F=2, temp_sample_rate=0.5, multi_modal_sample_rate=0.5, edge_reduction_rate=0.75):
 
@@ -134,6 +117,98 @@ class GRNN(nn.Module):
 #     return edge_index, edge_type
 
 
+def forward_push(edge_index, node_features, alpha=0.1, num_iterations=3):
+    num_nodes = node_features.shape[0]
+    adj_matrix = torch.zeros((num_nodes, num_nodes), device=node_features.device)
+    adj_matrix[edge_index[0], edge_index[1]] = 1
+
+    degree = adj_matrix.sum(dim=1, keepdim=True)
+    degree[degree == 0] = 1
+    adj_matrix = adj_matrix / degree
+
+    for _ in range(num_iterations):
+        node_features = node_features.clone() * (1 - alpha) + alpha * torch.matmul(adj_matrix, node_features)
+
+    return node_features
+
+class GRNN(nn.Module):
+    def __init__(self, input_dim, hidden_dim):
+        super(GRNN, self).__init__()
+        self.gcn1 = RGCNConv(input_dim, hidden_dim, num_relations=3)
+        self.gcn2 = RGCNConv(hidden_dim, hidden_dim, num_relations=3)
+        self.norm1 = nn.LayerNorm(hidden_dim)
+        self.norm2 = nn.LayerNorm(hidden_dim)
+        self.dropout = nn.Dropout(p=0.6)
+
+    def forward(self, x, edge_index, edge_type):
+        device = x.device
+        edge_index, edge_type = edge_index.to(device), edge_type.to(device)
+        
+        drop_mask = torch.bernoulli(torch.full((edge_index.shape[1],), 0.9, device=device)).bool()
+        edge_index, edge_type = edge_index[:, drop_mask], edge_type[drop_mask]
+        
+        adj_matrix = compute_adjacency_matrix(x)
+        propagation_matrix = compute_gfpush_matrix(adj_matrix)
+
+        x = self.norm1(self.gcn1(x, edge_index, edge_type).relu())
+        x = self.dropout(x)
+        x = self.norm2(self.gcn2(x, edge_index, edge_type).relu())
+        x = self.dropout(x)
+
+        x = forward_push(edge_index, x, alpha=0.1, num_iterations=3)
+        x = torch.matmul(propagation_matrix, x)
+
+        return x
+
+def compute_gfpush_matrix(adj_matrix, r_max=0.1, sparsification_ratio=0.5):
+    num_nodes = adj_matrix.shape[0]
+    propagation_matrix = torch.zeros_like(adj_matrix)
+
+    degree_matrix = adj_matrix.sum(dim=1, keepdim=True)
+    degree_matrix[degree_matrix == 0] = 1
+    normalized_adj = adj_matrix / degree_matrix
+
+    for i in range(num_nodes):
+        push_vector = torch.zeros(num_nodes, device=adj_matrix.device)
+        push_vector[i] = 1
+        residual_vector = push_vector.clone()
+
+        while residual_vector.sum() > r_max:
+            max_index = torch.argmax(residual_vector)
+            push_amount = residual_vector[max_index] * normalized_adj[max_index]
+
+            propagation_matrix = propagation_matrix.clone()
+            residual_vector = residual_vector.clone()
+
+            propagation_matrix[i] = propagation_matrix[i] + push_amount
+            residual_vector[max_index] = 0
+
+    num_keep = int(sparsification_ratio * num_nodes)
+    _, top_indices = torch.topk(propagation_matrix, num_keep, dim=1)
+    sparse_matrix = torch.zeros_like(propagation_matrix)
+
+    for i in range(num_nodes):
+        sparse_matrix[i, top_indices[i]] = propagation_matrix[i, top_indices[i]]
+
+    return sparse_matrix
+
+def get_edge_type(edge_index, node_features):
+    num_edges = edge_index.shape[1]
+    src_features = node_features[edge_index[0]]  
+    dest_features = node_features[edge_index[1]] 
+
+    src_norm = torch.nn.functional.normalize(src_features, dim=1)
+    dest_norm = torch.nn.functional.normalize(dest_features, dim=1)
+
+    cosine_sim = torch.sum(src_norm * dest_norm, dim=1)  
+    euclidean_dist = torch.norm(src_features - dest_features, dim=1)  
+
+    edge_types = torch.zeros(num_edges, dtype=torch.long)
+
+    edge_types[cosine_sim > 0.9] = 1 
+    edge_types[euclidean_dist < 0.5] = 2  
+
+    return edge_types
 
 
 
@@ -147,6 +222,17 @@ class SpeakerAttention(nn.Module):
         weights_sum = torch.sum(attention_weights * features, dim=0)
         return weights_sum
         
+
+def get_edge_index(adjacency_matrix, threshold=0.3):
+    if adjacency_matrix.shape[0] != adjacency_matrix.shape[1]:
+        raise ValueError(f" La matrice d'adjacence doit être carrée ! Shape: {adjacency_matrix.shape}")
+
+    edge_indices = (adjacency_matrix > threshold).nonzero(as_tuple=False).T  
+    num_nodes = adjacency_matrix.shape[0]
+    valid_edges = (edge_indices[0] < num_nodes) & (edge_indices[1] < num_nodes)
+    edge_indices = edge_indices[:, valid_edges]
+
+    return edge_indices
 
 def get_speaker_node_features(data):
     node_features = {}
@@ -196,88 +282,3 @@ def compute_adjacency_matrix(node_features):
 
     return adj_matrix
 
-
-def get_edge_index(adjacency_matrix, threshold=0.3):
-    if adjacency_matrix.shape[0] != adjacency_matrix.shape[1]:
-        raise ValueError(f" La matrice d'adjacence doit être carrée ! Shape: {adjacency_matrix.shape}")
-
-    edge_indices = (adjacency_matrix > threshold).nonzero(as_tuple=False).T  
-    num_nodes = adjacency_matrix.shape[0]
-    valid_edges = (edge_indices[0] < num_nodes) & (edge_indices[1] < num_nodes)
-    edge_indices = edge_indices[:, valid_edges]
-
-    return edge_indices
-
-
-
-def get_edge_type(edge_index, node_features):
-    """
-    Génère un type pour chaque arête en fonction des relations entre speakers.
-    Optimisation : Suppression des boucles `for` en utilisant des opérations vectorielles.
-    
-    Args:
-        edge_index (torch.Tensor): Matrice des connexions (2, num_edges).
-        node_features (torch.Tensor): Features des nœuds (num_nodes, feature_dim).
-
-    Returns:
-        edge_types (torch.Tensor): Types des connexions (num_edges,).
-    """
-    num_edges = edge_index.shape[1]
-
-    src_features = node_features[edge_index[0]]  
-    dest_features = node_features[edge_index[1]] 
-
-    src_norm = torch.nn.functional.normalize(src_features, dim=1)
-    dest_norm = torch.nn.functional.normalize(dest_features, dim=1)
-
-    cosine_sim = torch.sum(src_norm * dest_norm, dim=1)  
-
-    euclidean_dist = torch.norm(src_features - dest_features, dim=1)  
-
-    edge_types = torch.zeros(num_edges, dtype=torch.long)
-
-    edge_types[cosine_sim > 0.9] = 1 
-    edge_types[euclidean_dist < 0.5] = 2  
-
-    return edge_types
-
-import torch
-
-def compute_gfpush_matrix(adj_matrix, r_max=0.1, sparsification_ratio=0.5):
-    """
-    Implémente la matrice de propagation GFPush pour optimiser la diffusion des informations
-    dans le graphe tout en réduisant la charge computationnelle.
-
-    Args:
-        adj_matrix (torch.Tensor): Matrice d'adjacence normalisée (N, N).
-        r_max (float): Seuil de tolérance pour la diffusion.
-        sparsification_ratio (float): Ratio pour la réduction de la densité des connexions.
-
-    Returns:
-        torch.Tensor: Matrice de propagation optimisée (N, N).
-    """
-    num_nodes = adj_matrix.shape[0]
-    propagation_matrix = torch.zeros_like(adj_matrix)
-    degree_matrix = adj_matrix.sum(dim=1, keepdim=True)
-    degree_matrix[degree_matrix == 0] = 1  # Éviter division par zéro
-    normalized_adj = adj_matrix / degree_matrix  # Matrice normalisée
-
-    for i in range(num_nodes):
-        push_vector = torch.zeros(num_nodes, device=adj_matrix.device)
-        push_vector[i] = 1  # Initialisation de l'impulsion
-        residual_vector = push_vector.clone()
-
-        while residual_vector.sum() > r_max:
-            max_index = torch.argmax(residual_vector)
-            push_amount = residual_vector[max_index] * normalized_adj[max_index]
-            propagation_matrix[i] += push_amount
-            residual_vector[max_index] = 0  # Éviter la redondance
-
-    num_keep = int(sparsification_ratio * num_nodes)
-    _, top_indices = torch.topk(propagation_matrix, num_keep, dim=1)
-    sparse_matrix = torch.zeros_like(propagation_matrix)
-
-    for i in range(num_nodes):
-        sparse_matrix[i, top_indices[i]] = propagation_matrix[i, top_indices[i]]
-
-    return sparse_matrix

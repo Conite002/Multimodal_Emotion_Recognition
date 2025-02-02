@@ -7,7 +7,9 @@ import logging
 from utils.logger import create_logger
 from sklearn.metrics import precision_recall_fscore_support
 from pipelines.evaluation.evaluation_pipeline import evaluate_model_coattention_graph
+import os, sys
 
+sys.path.append(os.path.abspath(os.path.join('..', '..')))
 
 def train_model(model, train_loader, val_loader, num_epochs, learning_rate, device, modal=None, logfile="training.log", verbose=True, num_classes=7):
     """
@@ -78,10 +80,13 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-3)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
+    logfile = os.path.join('..', 'logs', 'training_logs', logfile)
+    print(f"Logfile: {logfile}")
     logger = create_logger(logfile)
 
     best_val_loss = float('inf')
-    best_model_path = model_name
+    best_model_path = os.path.join( '..', 'outputs', 'models', model_name)
+    print(f"Best model path: {best_model_path}")
     early_stopping_patience = 5
     epochs_without_improvement = 0
 

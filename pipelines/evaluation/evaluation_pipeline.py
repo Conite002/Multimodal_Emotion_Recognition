@@ -4,7 +4,8 @@ from utils.logger import create_logger
 from sklearn.metrics import precision_score, recall_score, f1_score
 from sklearn.metrics import precision_recall_fscore_support
 from tqdm import tqdm
-
+import os, sys
+sys.path.append(os.path.abspath(os.path.join('..', '..')))
 
 
 def evaluate_model(model, val_loader, criterion, device, num_classes=7, modal=None, logfile="evaluation.log", verbose=True):
@@ -207,6 +208,7 @@ def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbo
     precision, recall, f1, _ = precision_recall_fscore_support(all_labels, all_predictions, average='weighted')
     if verbose:
         print(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy * 100:.2f}%, Precision = {precision * 100:.2f}%, Recall = {recall * 100:.2f}%, F1 = {f1 * 100:.2f}%")
+
     logger = create_logger(logfile)
     logger.info(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
     return total_loss / len(val_loader), val_accuracy, precision, recall, f1, total_correct / total_samples
