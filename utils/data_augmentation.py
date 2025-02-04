@@ -19,7 +19,6 @@ from tqdm import tqdm
 # Check for GPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# Load models and move them to GPU
 processor_audio, model_audio = load_audio_model()
 model_audio.to(device)
 
@@ -29,7 +28,6 @@ model_text.to(device)
 feature_extractor_video, model_video = load_visualbert_model()
 model_video.to(device)
 
-# --- Optimized Audio Augmentation ---
 def augment_audio(audio_path, sample_rate=16000):
     try:
         waveform, sr = torchaudio.load(audio_path)  # Faster than librosa
@@ -57,7 +55,6 @@ def augment_audio(audio_path, sample_rate=16000):
     print(f"Audio augmented, shape: {waveform.shape}")
     return waveform
 
-# --- Optimized Text Augmentation ---
 def augment_text(text):
     try:
         aug = SynonymAug(aug_src='wordnet')
@@ -68,7 +65,6 @@ def augment_text(text):
         print(f"Error augmenting text: {e}")
         return text
 
-# --- Optimized Video Augmentation ---
 def augment_video(video_path):
     try:
         video, _, _ = io.read_video(video_path, pts_unit="sec")  # Read video efficiently
@@ -90,7 +86,7 @@ def augment_video(video_path):
 
 def augment_underrepresented_classes(data):
     initial_count = len(data)
-    print(f"📌 Initial training samples before augmentation: {initial_count}")
+    print(f"Initial training samples before augmentation: {initial_count}")
 
     class_counts = {label: sum(1 for x in data if x["label"] == label) for label in set(x["label"] for x in data)}
     max_samples = max(class_counts.values())
@@ -98,14 +94,12 @@ def augment_underrepresented_classes(data):
     augmented_samples = []
     underrepresented_classes = sorted(class_counts, key=class_counts.get)[:4]  # Focus on the 4 least represented classes
 
-    # ✅ Use tqdm to show augmentation progress
     for label in tqdm(underrepresented_classes, desc="Augmenting underrepresented classes", unit="class"):
         class_samples = [x for x in data if x["label"] == label]
         num_samples_to_add = max_samples - class_counts[label]
 
         selected_samples = random.choices(class_samples, k=num_samples_to_add)
 
-        # ✅ Use tqdm to track augmentation steps
         for item in tqdm(selected_samples, desc=f"Processing label {label}", unit="sample"):
             audio_aug = augment_audio(item["audio"])
             text_aug = augment_text(item["text"])
@@ -120,19 +114,17 @@ def augment_underrepresented_classes(data):
                     "speaker": item["speaker"]
                 })
 
-    data.extend(augmented_samples)  # ✅ Append new augmented data
-
+    data.extend(augmented_samples) 
     final_count = len(data)
-    print(f"✅ Number of training samples AFTER augmentation: {final_count}")
+    print(f"Number of training samples AFTER augmentation: {final_count}")
 
     if final_count <= initial_count:
-        print("⚠ WARNING: Data augmentation did NOT increase the number of samples! Check augmentation logic.")
+        print("WARNING: Data augmentation did NOT increase the number of samples! Check augmentation logic.")
 
     return data
 
 
 
-# --- Optimized DataLoader Creation with Debug ---
 def create_data_loaders_augmented(train_path, batch_size=32):
     try:
         with open(train_path, "r") as f:
@@ -142,16 +134,15 @@ def create_data_loaders_augmented(train_path, batch_size=32):
         return None
 
     initial_count = len(train_data)
-    print(f"📌 Initial number of training samples: {initial_count}")
+    print(f"Initial number of training samples: {initial_count}")
 
     train_data = augment_underrepresented_classes(train_data)
 
     augmented_count = len(train_data)
-    print(f"✅ Number of training samples after augmentation: {augmented_count}")
+    print(f"Number of training samples after augmentation: {augmented_count}")
 
-    # Vérifier si l'augmentation a bien augmenté le nombre d'échantillons
     if augmented_count <= initial_count:
-        print("⚠ WARNING: Data augmentation did NOT increase the number of samples! Check augmentation logic.")
+        print("WARNING: Data augmentation did NOT increase the number of samples! Check augmentation logic.")
 
     audio_embeddings, text_embeddings, video_embeddings, labels, speakers = [], [], [], [], []
     speakers_mapping = {speaker: idx for idx, speaker in enumerate(set(x["speaker"] for x in train_data))}
@@ -175,17 +166,17 @@ def create_data_loaders_augmented(train_path, batch_size=32):
                 video_embeddings.append(video_embedding)
                 labels.append(item["label"])
             except Exception as e:
-                print(f"❌ Error processing sample {item}: {e}")
+                print(f"Error processing sample {item}: {e}")
         
     except Exception as e:
-        print(f"❌ Error during data processing: {e}")
+        print(f"Error during data processing: {e}")
         return None
 
-    print(f"✅ Total processed: {len(audio_embeddings)} audio, {len(text_embeddings)} text, {len(video_embeddings)} video")
+    print(f"Total processed: {len(audio_embeddings)} audio, {len(text_embeddings)} text, {len(video_embeddings)} video")
 
     try:
         if len(audio_embeddings) == 0 or len(text_embeddings) == 0 or len(video_embeddings) == 0:
-            print("⚠ ERROR: One of the modalities has 0 samples.")
+            print("ERROR: One of the modalities has 0 samples.")
             return None
 
         train_audio_tensors = torch.stack(audio_embeddings).float()
@@ -194,7 +185,7 @@ def create_data_loaders_augmented(train_path, batch_size=32):
         train_speakers = torch.tensor(speakers, dtype=torch.long)
         train_labels = torch.tensor(labels, dtype=torch.long)
     except Exception as e:
-        print(f"❌ Error during tensor stacking: {e}")
+        print(f"Error during tensor stacking: {e}")
         return None
 
     train_loaders = {
@@ -216,6 +207,6 @@ def create_data_loaders_augmented(train_path, batch_size=32):
     }
 
     torch.save(save_data, save_path)
-    print(f"✅ Train loaders saved successfully at {save_path}")
+    print(f"Train loaders saved successfully at {save_path}")
 
     return train_loaders

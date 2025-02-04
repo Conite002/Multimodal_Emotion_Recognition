@@ -7,7 +7,6 @@ from preprocessing.text.preprocess_text import preprocess_text_for_model, load_t
 from preprocessing.audio.preprocess_audio import preprocess_audio_for_model, load_audio_model, extract_audio
 from pipelines.preprocessing.data_pipeline import generate_metadata
 import numpy as np
-import torch.nn as nn
 from pipelines.training.training_pipeline import train_model, train_model_coattention
 from models.audio.audio_model import AudioCNNClassifier
 from pipelines.training.training_pipeline import evaluate_model
@@ -21,9 +20,6 @@ from pipelines.evaluation.evaluation_pipeline import test_model_coattention, eva
 from models.bigru_coattention.multimodal import MultiModalDataset
 
 # ---------------------------------------------------------------------------------------------------------------------------------
-# Load the dataset
-import torch
-import numpy as np
 
 saved_data = torch.load(os.path.join("..", "outputs", "embeddings", "loaders_datasets.pt"))
 
@@ -48,7 +44,6 @@ test_dataset = MultiModalDataset(
     saved_data['test']['labels']
 )
 
-# Create DataLoaders
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 val_loader = DataLoader(val_dataset, batch_size=32, shuffle=False)
 test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False)
@@ -209,13 +204,11 @@ reduced_video_data_train = torch.stack([
     for video_sample in train_dataset.video_data
 ])
 
-# Preprocess validation dataset
 reduced_video_data_val = torch.stack([
     video_attention_module(video_sample.unsqueeze(0).to(device)).squeeze(0).cpu()
     for video_sample in val_dataset.video_data
 ])
 
-# Preprocess test dataset
 reduced_video_data_test = torch.stack([
     video_attention_module(video_sample.unsqueeze(0).to(device)).squeeze(0).cpu()
     for video_sample in test_dataset.video_data
@@ -232,32 +225,25 @@ print("Test video data shape after reduction:", test_dataset.video_data.shape)
 #---------------------------------------------------------------------------------------------------------------------
 window_size = 5
 
-# Create temporal windows for training dataset
 audio_windows_train, labels_train = create_temporal_windows(train_dataset.audio_data, train_dataset.labels, window_size=window_size)
 video_windows_train, _ = create_temporal_windows(train_dataset.video_data, train_dataset.labels, window_size=window_size)
 text_windows_train, _ = create_temporal_windows(train_dataset.text_data, train_dataset.labels, window_size=window_size)
 
-# Create temporal windows for validation dataset
 audio_windows_val, labels_val = create_temporal_windows(val_dataset.audio_data, val_dataset.labels, window_size=window_size)
 video_windows_val, _ = create_temporal_windows(val_dataset.video_data, val_dataset.labels, window_size=window_size)
 text_windows_val, _ = create_temporal_windows(val_dataset.text_data, val_dataset.labels, window_size=window_size)
 
-# Create temporal windows for test dataset
 audio_windows_test, labels_test = create_temporal_windows(test_dataset.audio_data, test_dataset.labels, window_size=window_size)
 video_windows_test, _ = create_temporal_windows(test_dataset.video_data, test_dataset.labels, window_size=window_size)
 text_windows_test, _ = create_temporal_windows(test_dataset.text_data, test_dataset.labels, window_size=window_size)
 
 
-# Create DataLoaders
-# Training Dataset and DataLoader
 train_dataset = MultiModalTemporalDataset(audio_windows_train, video_windows_train, text_windows_train, labels_train)
 train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=32, shuffle=True)
 
-# Validation Dataset and DataLoader
 val_dataset = MultiModalTemporalDataset(audio_windows_val, video_windows_val, text_windows_val, labels_val)
 val_loader = torch.utils.data.DataLoader(val_dataset, batch_size=32, shuffle=False)
 
-# Test Dataset and DataLoader
 test_dataset = MultiModalTemporalDataset(audio_windows_test, video_windows_test, text_windows_test, labels_test)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False)
 

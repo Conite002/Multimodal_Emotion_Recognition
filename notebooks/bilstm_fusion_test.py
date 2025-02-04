@@ -298,11 +298,9 @@ num_epochs = 50
 learning_rate = 5e-4
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# **Boucle sur toutes les approches**
 for model_name, ModelClass in models.items():
-    print(f"\n🔄 Entraînement du modèle : {model_name}")
+    print(f"\ Entraînement du modèle : {model_name}")
 
-    # **Initialisation du modèle**
     model = ModelClass(
         input_dim_audio=768,
         input_dim_text=768,
@@ -358,7 +356,7 @@ for model_name, ModelClass in models.items():
     print(f"Validation Loss: {val_loss:.4f}, Validation Accuracy: {val_accuracy * 100:.2f}%, "
           f"Precision: {precision * 100:.2f}%, Recall: {recall * 100:.2f}%, F1 Score: {f1 * 100:.2f}%")
 
-print("\n📊 Comparaison des performances des modèles :")
+print("\n Comparaison des performances des modèles :")
 for model_name, metrics in results.items():
     print(f"\n🔹 {model_name}:")
     for metric, value in metrics.items():
