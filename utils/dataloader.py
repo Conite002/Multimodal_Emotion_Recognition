@@ -198,7 +198,7 @@ def create_dataloader_with_graph_features(data):
         labels=data["test"]["labels"],
         speaker_ids=data["test"]["speaker"]
     )
-    train_loader = DataLoader(train_dataset, batch_size=4)
+    train_loader = DataLoader(train_dataset, batch_size=4, sampler=weights_sampler_train)
     val_loader = DataLoader(val_dataset, batch_size=4)
     test_loader = DataLoader(test_dataset, batch_size=4)
     return train_loader, val_loader, test_loader

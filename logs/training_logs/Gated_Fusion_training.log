@@ -4731,3 +4731,251 @@
 2025-02-03 17:56:52,311 - INFO - Val Loss = 1.1983, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
 2025-02-03 17:56:52,311 - INFO - Early stopping at epoch 13
 2025-02-03 17:56:52,314 - INFO - Loaded best model with val loss: 1.1938
+2025-02-04 13:49:01,959 - INFO - Starting Epoch 1/50
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 0: 91.04%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 1: 54.60%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 2: 25.49%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 3: 0.00%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 4: 9.01%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:09,461 - INFO - Accuracy of class 6: 40.67%
+2025-02-04 13:49:09,461 - INFO - Val Loss = 1.2551, Val Accuracy = 0.56%, Precision = 0.51, Recall = 0.56, F1 = 0.51
+2025-02-04 13:49:09,464 - INFO - Best model saved at epoch 1 with val loss: 1.2551
+2025-02-04 13:49:09,464 - INFO - Starting Epoch 2/50
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 0: 87.85%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 1: 55.83%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 2: 33.33%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 3: 0.00%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 4: 11.71%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:16,772 - INFO - Accuracy of class 6: 43.33%
+2025-02-04 13:49:16,772 - INFO - Val Loss = 1.2152, Val Accuracy = 0.57%, Precision = 0.51, Recall = 0.57, F1 = 0.52
+2025-02-04 13:49:16,776 - INFO - Best model saved at epoch 2 with val loss: 1.2152
+2025-02-04 13:49:16,776 - INFO - Starting Epoch 3/50
+2025-02-04 13:49:24,130 - INFO - Accuracy of class 0: 88.49%
+2025-02-04 13:49:24,130 - INFO - Accuracy of class 1: 55.83%
+2025-02-04 13:49:24,130 - INFO - Accuracy of class 2: 32.68%
+2025-02-04 13:49:24,130 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:49:24,130 - INFO - Accuracy of class 4: 15.32%
+2025-02-04 13:49:24,131 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:24,131 - INFO - Accuracy of class 6: 46.00%
+2025-02-04 13:49:24,131 - INFO - Val Loss = 1.2046, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.54
+2025-02-04 13:49:24,133 - INFO - Best model saved at epoch 3 with val loss: 1.2046
+2025-02-04 13:49:24,134 - INFO - Starting Epoch 4/50
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 0: 87.85%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 2: 32.03%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 4: 15.32%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:31,394 - INFO - Accuracy of class 6: 48.00%
+2025-02-04 13:49:31,394 - INFO - Val Loss = 1.1985, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.54
+2025-02-04 13:49:31,398 - INFO - Best model saved at epoch 4 with val loss: 1.1985
+2025-02-04 13:49:31,398 - INFO - Starting Epoch 5/50
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 0: 87.85%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 2: 33.33%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 4: 17.12%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:38,717 - INFO - Accuracy of class 6: 46.67%
+2025-02-04 13:49:38,717 - INFO - Val Loss = 1.1942, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.54
+2025-02-04 13:49:38,720 - INFO - Best model saved at epoch 5 with val loss: 1.1942
+2025-02-04 13:49:38,721 - INFO - Starting Epoch 6/50
+2025-02-04 13:49:46,209 - INFO - Accuracy of class 0: 87.21%
+2025-02-04 13:49:46,209 - INFO - Accuracy of class 1: 57.06%
+2025-02-04 13:49:46,210 - INFO - Accuracy of class 2: 32.68%
+2025-02-04 13:49:46,210 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:49:46,210 - INFO - Accuracy of class 4: 18.92%
+2025-02-04 13:49:46,210 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:46,210 - INFO - Accuracy of class 6: 47.33%
+2025-02-04 13:49:46,210 - INFO - Val Loss = 1.1944, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.55
+2025-02-04 13:49:46,210 - INFO - Starting Epoch 7/50
+2025-02-04 13:49:53,503 - INFO - Accuracy of class 0: 87.21%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 1: 57.67%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 2: 33.99%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 4: 18.92%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:49:53,504 - INFO - Accuracy of class 6: 48.00%
+2025-02-04 13:49:53,504 - INFO - Val Loss = 1.1944, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
+2025-02-04 13:49:53,504 - INFO - Starting Epoch 8/50
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 0: 86.78%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 1: 57.67%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 2: 33.99%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 4: 18.92%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:01,016 - INFO - Accuracy of class 6: 48.67%
+2025-02-04 13:50:01,016 - INFO - Val Loss = 1.1938, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
+2025-02-04 13:50:01,019 - INFO - Best model saved at epoch 8 with val loss: 1.1938
+2025-02-04 13:50:01,019 - INFO - Starting Epoch 9/50
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 0: 86.57%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 2: 33.99%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 4: 18.92%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:08,422 - INFO - Accuracy of class 6: 48.00%
+2025-02-04 13:50:08,422 - INFO - Val Loss = 1.1962, Val Accuracy = 0.58%, Precision = 0.53, Recall = 0.58, F1 = 0.55
+2025-02-04 13:50:08,423 - INFO - Starting Epoch 10/50
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 0: 86.35%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 2: 33.33%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 4: 18.92%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:15,961 - INFO - Accuracy of class 6: 48.67%
+2025-02-04 13:50:15,961 - INFO - Val Loss = 1.1979, Val Accuracy = 0.58%, Precision = 0.53, Recall = 0.58, F1 = 0.55
+2025-02-04 13:50:15,961 - INFO - Starting Epoch 11/50
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 0: 86.57%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 2: 33.33%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 4: 20.72%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:23,461 - INFO - Accuracy of class 6: 48.67%
+2025-02-04 13:50:23,461 - INFO - Val Loss = 1.1997, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.55
+2025-02-04 13:50:23,462 - INFO - Starting Epoch 12/50
+2025-02-04 13:50:30,908 - INFO - Accuracy of class 0: 86.99%
+2025-02-04 13:50:30,908 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:50:30,908 - INFO - Accuracy of class 2: 33.33%
+2025-02-04 13:50:30,909 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:50:30,909 - INFO - Accuracy of class 4: 22.52%
+2025-02-04 13:50:30,909 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:30,909 - INFO - Accuracy of class 6: 48.67%
+2025-02-04 13:50:30,909 - INFO - Val Loss = 1.2008, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
+2025-02-04 13:50:30,909 - INFO - Starting Epoch 13/50
+2025-02-04 13:50:38,050 - INFO - Accuracy of class 0: 86.57%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 2: 33.99%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 4: 22.52%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:50:38,051 - INFO - Accuracy of class 6: 48.67%
+2025-02-04 13:50:38,051 - INFO - Val Loss = 1.1983, Val Accuracy = 0.59%, Precision = 0.54, Recall = 0.59, F1 = 0.55
+2025-02-04 13:50:38,051 - INFO - Early stopping at epoch 13
+2025-02-04 13:50:38,055 - INFO - Loaded best model with val loss: 1.1938
+2025-02-04 13:57:05,629 - INFO - Starting Epoch 1/50
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 0: 82.73%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 1: 47.24%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 2: 38.56%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 4: 17.12%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 5: 0.00%
+2025-02-04 13:57:13,393 - INFO - Accuracy of class 6: 54.00%
+2025-02-04 13:57:13,393 - INFO - Val Loss = 1.2587, Val Accuracy = 0.56%, Precision = 0.52, Recall = 0.56, F1 = 0.53
+2025-02-04 13:57:13,396 - INFO - Best model saved at epoch 1 with val loss: 1.2587
+2025-02-04 13:57:13,396 - INFO - Starting Epoch 2/50
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 0: 62.90%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 1: 55.83%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 2: 49.02%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 4: 27.93%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 5: 12.50%
+2025-02-04 13:57:20,498 - INFO - Accuracy of class 6: 60.67%
+2025-02-04 13:57:20,499 - INFO - Val Loss = 1.3246, Val Accuracy = 0.53%, Precision = 0.54, Recall = 0.53, F1 = 0.53
+2025-02-04 13:57:20,499 - INFO - Starting Epoch 3/50
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 0: 88.70%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 1: 47.24%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 2: 30.07%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 3: 13.64%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 4: 17.12%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 5: 12.50%
+2025-02-04 13:57:27,914 - INFO - Accuracy of class 6: 48.00%
+2025-02-04 13:57:27,914 - INFO - Val Loss = 1.2203, Val Accuracy = 0.58%, Precision = 0.54, Recall = 0.58, F1 = 0.54
+2025-02-04 13:57:27,917 - INFO - Best model saved at epoch 3 with val loss: 1.2203
+2025-02-04 13:57:27,917 - INFO - Starting Epoch 4/50
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 0: 74.63%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 1: 60.74%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 2: 43.14%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 4: 28.83%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 5: 7.50%
+2025-02-04 13:57:35,266 - INFO - Accuracy of class 6: 50.00%
+2025-02-04 13:57:35,266 - INFO - Val Loss = 1.2425, Val Accuracy = 0.57%, Precision = 0.56, Recall = 0.57, F1 = 0.55
+2025-02-04 13:57:35,266 - INFO - Starting Epoch 5/50
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 0: 83.58%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 1: 44.79%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 2: 42.48%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 3: 18.18%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 4: 19.82%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 5: 10.00%
+2025-02-04 13:57:42,225 - INFO - Accuracy of class 6: 54.00%
+2025-02-04 13:57:42,225 - INFO - Val Loss = 1.2099, Val Accuracy = 0.58%, Precision = 0.56, Recall = 0.58, F1 = 0.56
+2025-02-04 13:57:42,228 - INFO - Best model saved at epoch 5 with val loss: 1.2099
+2025-02-04 13:57:42,229 - INFO - Starting Epoch 6/50
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 0: 79.74%
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 1: 41.10%
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 2: 41.83%
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 3: 22.73%
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 4: 27.93%
+2025-02-04 13:57:49,725 - INFO - Accuracy of class 5: 10.00%
+2025-02-04 13:57:49,726 - INFO - Accuracy of class 6: 66.00%
+2025-02-04 13:57:49,726 - INFO - Val Loss = 1.2139, Val Accuracy = 0.58%, Precision = 0.57, Recall = 0.58, F1 = 0.56
+2025-02-04 13:57:49,726 - INFO - Starting Epoch 7/50
+2025-02-04 13:57:56,938 - INFO - Accuracy of class 0: 73.35%
+2025-02-04 13:57:56,938 - INFO - Accuracy of class 1: 66.26%
+2025-02-04 13:57:56,938 - INFO - Accuracy of class 2: 39.22%
+2025-02-04 13:57:56,939 - INFO - Accuracy of class 3: 18.18%
+2025-02-04 13:57:56,939 - INFO - Accuracy of class 4: 25.23%
+2025-02-04 13:57:56,939 - INFO - Accuracy of class 5: 20.00%
+2025-02-04 13:57:56,939 - INFO - Accuracy of class 6: 44.00%
+2025-02-04 13:57:56,939 - INFO - Val Loss = 1.2801, Val Accuracy = 0.56%, Precision = 0.56, Recall = 0.56, F1 = 0.55
+2025-02-04 13:57:56,939 - INFO - Starting Epoch 8/50
+2025-02-04 13:58:04,051 - INFO - Accuracy of class 0: 82.30%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 1: 49.69%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 2: 43.79%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 3: 9.09%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 4: 26.13%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 5: 7.50%
+2025-02-04 13:58:04,052 - INFO - Accuracy of class 6: 48.00%
+2025-02-04 13:58:04,052 - INFO - Val Loss = 1.2083, Val Accuracy = 0.58%, Precision = 0.55, Recall = 0.58, F1 = 0.56
+2025-02-04 13:58:04,055 - INFO - Best model saved at epoch 8 with val loss: 1.2083
+2025-02-04 13:58:04,056 - INFO - Starting Epoch 9/50
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 0: 80.38%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 1: 50.92%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 2: 39.22%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 3: 31.82%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 4: 21.62%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 5: 12.50%
+2025-02-04 13:58:11,187 - INFO - Accuracy of class 6: 56.00%
+2025-02-04 13:58:11,187 - INFO - Val Loss = 1.2399, Val Accuracy = 0.58%, Precision = 0.57, Recall = 0.58, F1 = 0.56
+2025-02-04 13:58:11,187 - INFO - Starting Epoch 10/50
+2025-02-04 13:58:18,453 - INFO - Accuracy of class 0: 81.02%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 1: 56.44%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 2: 32.68%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 3: 18.18%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 4: 41.44%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 5: 15.00%
+2025-02-04 13:58:18,454 - INFO - Accuracy of class 6: 46.00%
+2025-02-04 13:58:18,454 - INFO - Val Loss = 1.2304, Val Accuracy = 0.58%, Precision = 0.57, Recall = 0.58, F1 = 0.57
+2025-02-04 13:58:18,454 - INFO - Starting Epoch 11/50
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 0: 80.81%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 1: 50.31%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 2: 37.91%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 3: 27.27%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 4: 26.13%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 5: 25.00%
+2025-02-04 13:58:25,894 - INFO - Accuracy of class 6: 45.33%
+2025-02-04 13:58:25,894 - INFO - Val Loss = 1.2727, Val Accuracy = 0.57%, Precision = 0.57, Recall = 0.57, F1 = 0.56
+2025-02-04 13:58:25,894 - INFO - Starting Epoch 12/50
+2025-02-04 13:58:33,034 - INFO - Accuracy of class 0: 69.08%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 1: 41.10%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 2: 45.10%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 3: 22.73%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 4: 38.74%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 5: 15.00%
+2025-02-04 13:58:33,035 - INFO - Accuracy of class 6: 64.00%
+2025-02-04 13:58:33,035 - INFO - Val Loss = 1.2670, Val Accuracy = 0.55%, Precision = 0.56, Recall = 0.55, F1 = 0.55
+2025-02-04 13:58:33,035 - INFO - Starting Epoch 13/50
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 0: 86.57%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 1: 53.37%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 2: 44.44%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 3: 18.18%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 4: 14.41%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 5: 15.00%
+2025-02-04 13:58:40,150 - INFO - Accuracy of class 6: 41.33%
+2025-02-04 13:58:40,150 - INFO - Val Loss = 1.2364, Val Accuracy = 0.59%, Precision = 0.56, Recall = 0.59, F1 = 0.56
+2025-02-04 13:58:40,151 - INFO - Early stopping at epoch 13
+2025-02-04 13:58:40,154 - INFO - Loaded best model with val loss: 1.2083
