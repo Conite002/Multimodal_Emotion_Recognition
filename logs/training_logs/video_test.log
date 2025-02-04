@@ -1,0 +1,33 @@
+2025-01-13 13:28:57,048 - INFO - Accuracy of class 0: 72.61%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 1: 7.96%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 2: 8.99%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 4: 2.88%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 13:28:57,049 - INFO - Accuracy of class 6: 11.39%
+2025-01-13 13:28:57,049 - INFO - Validation Loss: 10.6023
+2025-01-13 13:28:57,049 - INFO - Validation Accuracy: 38.81%
+2025-01-13 13:28:57,049 - INFO - Validation Precision: 0.30
+2025-01-13 13:28:57,050 - INFO - Validation Recall: 0.39
+2025-01-13 13:28:57,050 - INFO - Validation F1-Score: 0.33
+2025-01-13 13:37:56,867 - INFO - Accuracy of class 0: 72.61%
+2025-01-13 13:37:56,867 - INFO - Accuracy of class 1: 7.96%
+2025-01-13 13:37:56,867 - INFO - Accuracy of class 2: 8.99%
+2025-01-13 13:37:56,867 - INFO - Accuracy of class 3: 0.00%
+2025-01-13 13:37:56,867 - INFO - Accuracy of class 4: 2.88%
+2025-01-13 13:37:56,868 - INFO - Accuracy of class 5: 0.00%
+2025-01-13 13:37:56,868 - INFO - Accuracy of class 6: 11.39%
+2025-01-13 13:37:56,868 - INFO - Validation Loss: 10.6023
+2025-01-13 13:37:56,868 - INFO - Validation Accuracy: 38.81%
+2025-01-13 13:37:56,868 - INFO - Validation Precision: 0.30
+2025-01-13 13:37:56,868 - INFO - Validation Recall: 0.39
+2025-01-13 13:37:56,868 - INFO - Validation F1-Score: 0.33
+2025-01-17 10:56:23,363 - INFO - Accuracy of class 0: 59.07%
+2025-01-17 10:56:23,372 - INFO - Accuracy of class 1: 9.28%
+2025-01-17 10:56:23,372 - INFO - Accuracy of class 2: 9.70%
+2025-01-17 10:56:23,372 - INFO - Accuracy of class 3: 15.92%
+2025-01-17 10:56:23,372 - INFO - Validation Loss: 6.6946
+2025-01-17 10:56:23,372 - INFO - Validation Accuracy: 19.13%
+2025-01-17 10:56:23,372 - INFO - Validation Precision: 0.36
+2025-01-17 10:56:23,372 - INFO - Validation Recall: 0.19
+2025-01-17 10:56:23,372 - INFO - Validation F1-Score: 0.20

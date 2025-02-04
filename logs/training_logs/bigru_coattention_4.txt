@@ -1,0 +1,13 @@
+2025-01-26 21:13:15,858 - INFO - Validation Loss: 0.8363, Validation Accuracy: 68.40%, Precision: 0.71, Recall: 0.68, F1: 0.62
+2025-01-26 21:13:31,198 - INFO - Validation Loss: 0.7574, Validation Accuracy: 73.11%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:13:47,181 - INFO - Validation Loss: 0.7441, Validation Accuracy: 71.25%, Precision: 0.68, Recall: 0.71, F1: 0.69
+2025-01-26 21:14:02,755 - INFO - Validation Loss: 0.7978, Validation Accuracy: 73.73%, Precision: 0.71, Recall: 0.74, F1: 0.71
+2025-01-26 21:14:18,718 - INFO - Validation Loss: 0.8340, Validation Accuracy: 72.37%, Precision: 0.69, Recall: 0.72, F1: 0.70
+2025-01-26 21:14:35,285 - INFO - Validation Loss: 0.8261, Validation Accuracy: 71.75%, Precision: 0.69, Recall: 0.72, F1: 0.69
+2025-01-26 21:14:52,517 - INFO - Validation Loss: 0.7791, Validation Accuracy: 70.76%, Precision: 0.70, Recall: 0.71, F1: 0.69
+2025-01-26 21:15:09,959 - INFO - Validation Loss: 0.8053, Validation Accuracy: 71.75%, Precision: 0.70, Recall: 0.72, F1: 0.70
+2025-01-26 21:15:27,955 - INFO - Validation Loss: 0.8529, Validation Accuracy: 72.61%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:15:46,258 - INFO - Validation Loss: 0.9265, Validation Accuracy: 70.14%, Precision: 0.68, Recall: 0.70, F1: 0.68
+2025-01-26 21:16:04,347 - INFO - Validation Loss: 0.8934, Validation Accuracy: 70.01%, Precision: 0.68, Recall: 0.70, F1: 0.69
+2025-01-26 21:16:22,346 - INFO - Validation Loss: 0.9353, Validation Accuracy: 70.01%, Precision: 0.67, Recall: 0.70, F1: 0.68
+2025-01-26 21:16:40,439 - INFO - Validation Loss: 0.9816, Validation Accuracy: 69.89%, Precision: 0.68, Recall: 0.70, F1: 0.68
