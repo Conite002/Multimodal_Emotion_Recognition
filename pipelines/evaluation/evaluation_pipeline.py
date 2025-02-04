@@ -191,12 +191,21 @@ def evaluate_model_coattention(model, val_loader, criterion, device, verbose=Tru
 
 
 def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbose=True, num_classes=7, logfile="evaluation_log_graph_coattention", node_features=None, edge_index=None, edge_type=None):
+    model = model.to(device)
     model.eval()
+
+    if node_features is not None:
+        node_features = node_features.to(device)
+    if edge_index is not None:
+        edge_index = edge_index.to(device)
+    if edge_type is not None:
+        edge_type = edge_type.to(device)
     total_loss, total_correct, total_samples = 0.0, 0, 0
     all_labels, all_predictions = [], []
     with torch.no_grad():
         for batch in tqdm(val_loader, desc="Evaluating"):
             audio, text, video, labels, batch_speaker_ids = [item.to(device) for item in batch]
+
             outputs = model(audio, text, video,  node_features=node_features, edge_index=edge_index, edge_type=edge_type,  batch_speaker_ids=batch_speaker_ids)
             loss = criterion(outputs, labels)
             total_loss += loss.item()
@@ -209,6 +218,23 @@ def evaluate_model_coattention_graph(model, val_loader, criterion, device, verbo
     if verbose:
         print(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy * 100:.2f}%, Precision = {precision * 100:.2f}%, Recall = {recall * 100:.2f}%, F1 = {f1 * 100:.2f}%")
 
+
+
     logger = create_logger(logfile)
+
+    class_correct = [0 for _ in range(num_classes)]
+    class_total = [0 for _ in range(num_classes)]
+    for label, prediction in zip(all_labels, all_predictions):
+        class_total[label] += 1
+        if label == prediction:
+            class_correct[label] += 1
+
+    class_accuracies = []
+    for i in range(num_classes):
+        accuracy = 100 * class_correct[i] / class_total[i] if class_total[i] > 0 else 0
+        class_accuracies.append(accuracy)
+        if verbose:
+            print(f"Accuracy of class {i}: {accuracy:.2f}%")
+        logger.info(f"Accuracy of class {i}: {accuracy:.2f}%")
     logger.info(f"Val Loss = {total_loss / len(val_loader):.4f}, Val Accuracy = {val_accuracy:.2f}%, Precision = {precision:.2f}, Recall = {recall:.2f}, F1 = {f1:.2f}")
     return total_loss / len(val_loader), val_accuracy, precision, recall, f1, total_correct / total_samples

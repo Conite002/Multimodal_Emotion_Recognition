@@ -71,13 +71,20 @@ import torch.nn as nn
 from tqdm import tqdm
 import os
 
-def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1e-3, logfile="training_log_graph_coattention.log", num_classes=7, nodes_edges=None, model_name='best_model_graph_coattention.pth', verbose=True):
+def train_coattention_graph(model, train_loader, val_loader, original_data=None, num_epochs=10, lr=1e-3, logfile="training_log_graph_coattention.log", num_classes=7, nodes_edges=None, model_name='best_model_graph_coattention.pth', verbose=True):
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = model.to(device)
     nodes_edges = {key: {k: v.to(device) for k, v in value.items()} for key, value in nodes_edges.items()}
 
+    # train_labels = original_data["train"]["labels"]
+    # class_counts = torch.bincount(train_labels)
+    # class_weights = 1.0 / (class_counts.float() + 1e-6)  
+    # class_weights = class_weights / class_weights.sum()
+
+    # criterion = nn.CrossEntropyLoss(weight=class_weights.to(device))
     criterion = nn.CrossEntropyLoss()
+    # criterion = FocalLoss(alpha=0.25, gamma=2)
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-3)
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5, verbose=True)
     logfile = os.path.join('..', 'logs', 'training_logs', logfile)
@@ -154,3 +161,25 @@ def train_coattention_graph(model, train_loader, val_loader, num_epochs=10, lr=1
         logger.info(f"Loaded best model with val loss: {best_val_loss:.4f}")
 
     return model
+
+class FocalLoss(nn.Module):
+    """
+    Implémente la Focal Loss pour améliorer la gestion des classes sous-représentées.
+    """
+    def __init__(self, alpha=1, gamma=2, reduction="mean"):
+        super(FocalLoss, self).__init__()
+        self.alpha = alpha
+        self.gamma = gamma
+        self.reduction = reduction
+
+    def forward(self, inputs, targets):
+        ce_loss = nn.CrossEntropyLoss(reduction="none")(inputs, targets)
+        p_t = torch.exp(-ce_loss)  # Probabilité de la classe correcte
+        loss = self.alpha * (1 - p_t) ** self.gamma * ce_loss  # Modulation
+
+        if self.reduction == "mean":
+            return loss.mean()
+        elif self.reduction == "sum":
+            return loss.sum()
+        else:
+            return loss

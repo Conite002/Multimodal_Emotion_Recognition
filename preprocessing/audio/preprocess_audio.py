@@ -5,6 +5,7 @@ from transformers import Wav2Vec2Processor, Wav2Vec2Model
 import os
 from moviepy.video.io.VideoFileClip import VideoFileClip
 from tqdm import tqdm
+import opensmile
 
 def load_audio_model(model_name="facebook/wav2vec2-base"):
     """
@@ -19,6 +20,16 @@ def load_audio_model(model_name="facebook/wav2vec2-base"):
     model = Wav2Vec2Model.from_pretrained(model_name)
     model.eval()
     return processor, model
+
+def preprocess_audio_with_opensmile(audio_path, config_path="IS10_paraling" ):
+
+    try:
+        smile = opensmile.Smile(feature_set=config_path, feature_level="func")
+        features = smile.process_file(audio_path)
+        return features.to_numpy().squeeze()
+    except Exception as e:
+        print(f"Error processing audio: {e}")
+        return None
 
 
 def preprocess_audio_for_model(audio_path, processor, model, target_sample_rate=16000, target_duration=8.0):

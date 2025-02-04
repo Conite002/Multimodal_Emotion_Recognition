@@ -1,8 +1,7 @@
 import os
 import cv2
 from PIL import Image
-from transformers import ViTFeatureExtractor, ViTModel
-import cv2
+from transformers import ViTFeatureExtractor, ViTModel,  BertTokenizer, VisualBertModel
 import numpy as np
 import torch
 
@@ -63,19 +62,7 @@ def load_vit_model(model_name="google/vit-base-patch16-224-in21k"):
 
 
 def preprocess_video_for_model(video_path, feature_extractor, model, num_frames=16, frame_size=(224, 224)):
-    """
-    Preprocess video and extract embeddings using a specified model.
 
-    Args:
-        video_path (str): Path to the video file.
-        feature_extractor: Hugging Face feature extractor for ViT.
-        model: Hugging Face model.
-        num_frames (int): Number of frames to sample.
-        frame_size (tuple): Frame size (height, width).
-
-    Returns:
-        np.ndarray: Extracted video embeddings.
-    """
     try:
         video = cv2.VideoCapture(video_path)
         total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -97,6 +84,82 @@ def preprocess_video_for_model(video_path, feature_extractor, model, num_frames=
             outputs = model(pixel_values)
         embeddings = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
 
+        return embeddings
+    except Exception as e:
+        print(f"Error processing video: {e}")
+        return None
+
+# -----------------------------------------------------------------------------------------------------------------------
+from tqdm import tqdm
+from transformers import BertTokenizer, VisualBertModel
+
+def load_visualbert_model(model_name="uclanlp/visualbert-vqa-coco-pre"):
+    """
+    Load the VisualBERT model and tokenizer.
+    
+    Args:
+        model_name (str): Pretrained model name.
+    
+    Returns:
+        tuple: (tokenizer, model)
+    """
+    tokenizer = BertTokenizer.from_pretrained("google-bert/bert-base-uncased")
+    model = VisualBertModel.from_pretrained(model_name)
+    model.eval()
+    return tokenizer, model
+
+import torch
+import cv2
+import numpy as np
+from transformers import BertTokenizer, VisualBertModel
+
+def preprocess_video_for_visualbert(video_path, tokenizer, model, num_frames=16, frame_size=(224, 224)):
+    """
+        Preprocess a video and extract embeddings using VisualBERT.
+        
+        Args:
+            video_path (str): Path to the video file.
+            tokenizer: BERT tokenizer.
+            model: VisualBERT model.
+            num_frames (int): Number of frames to sample.
+            frame_size (tuple): Frame size (height, width).
+        
+        Returns:
+            torch.Tensor: Extracted video embeddings.
+    """
+    try:
+        video = cv2.VideoCapture(video_path)
+        total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+        frame_indices = np.linspace(0, total_frames - 1, num_frames, dtype=int)
+
+        frames = []
+        for idx in frame_indices:
+            video.set(cv2.CAP_PROP_POS_FRAMES, idx)
+            success, frame = video.read()
+            if success:
+                resized_frame = cv2.resize(frame, frame_size)
+                frames.append(resized_frame)
+        
+        video.release()
+        
+        if not frames:
+            print(f"Error: No frames extracted from video {video_path}")
+            return None
+        
+        visual_embeds = torch.stack([torch.tensor(frame, dtype=torch.float32).permute(2, 0, 1) for frame in frames])
+        visual_embeds = visual_embeds.mean(dim=0, keepdim=True)
+        inputs = tokenizer("Describe the video content", return_tensors="pt")
+        visual_token_type_ids = torch.ones(visual_embeds.shape[:-1], dtype=torch.long)
+        visual_attention_mask = torch.ones(visual_embeds.shape[:-1], dtype=torch.float)
+        inputs.update({
+            "visual_embeds": visual_embeds.unsqueeze(0), 
+            "visual_token_type_ids": visual_token_type_ids.unsqueeze(0),
+            "visual_attention_mask": visual_attention_mask.unsqueeze(0),
+        })
+        
+        with torch.no_grad():
+            outputs = model(**inputs)
+        embeddings = outputs.last_hidden_state.mean(dim=1).squeeze()
         return embeddings
     except Exception as e:
         print(f"Error processing video: {e}")

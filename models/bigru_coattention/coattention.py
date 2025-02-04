@@ -360,12 +360,13 @@ class CoAttentionFusion_Gated(nn.Module):
     def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128):
         super().__init__()
         self.fusion_gate = nn.Linear(hidden_dim, 3)
-        self.fc = nn.Sequential(
-            nn.Linear(768, hidden_dim),
-            nn.ReLU(),
-            nn.Dropout(0.6),
-            nn.Linear(hidden_dim, num_classes)
-        )
+        # self.fc = nn.Sequential(
+        #     nn.Linear(768, 64),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.6),
+        #     nn.Linear(64, num_classes)
+        # )
+        self.fc = nn.Linear(768, num_classes)
         self.fusion_projection = nn.Linear(768*3, hidden_dim)
 
     def forward(self, audio, text, video, node_features, edge_index, edge_type, batch_speaker_ids):
@@ -377,16 +378,75 @@ class CoAttentionFusion_Gated(nn.Module):
         video = video.mean(dim=1)  
         concatenated = torch.cat([audio, text, video], dim=-1) 
         concatenated = self.fusion_projection(concatenated) 
-        print(f"Concatenated Shape Before Projection: {concatenated.shape}")
 
         fusion_weights = torch.sigmoid(self.fusion_gate(concatenated)) 
         combined = fusion_weights[:, 0].unsqueeze(1) * audio + \
                 fusion_weights[:, 1].unsqueeze(1) * text + \
                 fusion_weights[:, 2].unsqueeze(1) * video
 
+
         x = self.fc(combined)
         return x
    
+# --------------------------------------------------------------------------------------------------------------------------
+import torch
+import torch.nn as nn
+from torch_geometric.nn import GATConv, RGCNConv, global_add_pool
+
+class CoAttentionFusion_Gated_Graph(nn.Module):
+    def __init__(self, input_dim_audio, input_dim_text, input_dim_video, num_classes, hidden_dim=128):
+        super().__init__()
+
+        # **1️⃣ Gated Fusion Multimodale**
+        self.fusion_gate = nn.Linear(hidden_dim, 3)
+        
+        # **2️⃣ Projection des Modalités**
+        self.fusion_projection = nn.Linear(768 * 3, hidden_dim)
+
+        # **3️⃣ Graphe Relationnel pour la Fusion Finale**
+        self.graph_constructor = GraphConstructor(input_dim=2304, hidden_dim=hidden_dim)
+        self.grnn = GRNN(input_dim=hidden_dim, hidden_dim=hidden_dim)
+
+        # **4️⃣ Classification Finale avec Ajustement du Graphe**
+        self.fc = nn.Sequential(
+            nn.Linear(896, hidden_dim),
+            nn.ReLU(),
+            nn.Dropout(0.6),
+            nn.Linear(hidden_dim, num_classes)
+        )
+
+    def forward(self, audio, text, video, node_features, edge_index, edge_type, batch_speaker_ids):
+        device = audio.device
+        node_features = node_features.to(device)
+        edge_index = edge_index.to(device)
+        edge_type = edge_type.to(device)
+        batch_speaker_ids = batch_speaker_ids.to(device)
+
+        # **1️⃣ Réduction Temporelle pour Vidéo**
+        video = video.mean(dim=1)  
+
+        # **2️⃣ Fusion Gated**
+        concatenated = torch.cat([audio, text, video], dim=-1)  
+        concatenated = self.fusion_projection(concatenated)  
+
+        fusion_weights = torch.sigmoid(self.fusion_gate(concatenated))  
+        combined = fusion_weights[:, 0].unsqueeze(1) * audio + \
+                   fusion_weights[:, 1].unsqueeze(1) * text + \
+                   fusion_weights[:, 2].unsqueeze(1) * video
+
+        graph_features = self.graph_constructor(node_features, edge_index)
+        graph_output = self.grnn(graph_features, edge_index, edge_type)
+
+        graph_output = (graph_output - graph_output.mean()) / (graph_output.std() + 1e-6)  
+        graph_output = graph_output * 0.2 
+        if batch_speaker_ids.max() >= graph_output.shape[0]:
+            raise IndexError(f"batch_speaker_ids contient un indice hors limite ! Max: {graph_output.shape[0]-1}, Trouvé: {batch_speaker_ids.max()}")
+
+        batch_graph_features = graph_output[batch_speaker_ids] 
+        combined = torch.cat([combined, batch_graph_features], dim=-1) 
+        x = self.fc(combined)
+        return x
+
 # --------------------------------------------------------------------------------------------------------------------------
 import torch
 import torch.nn as nn

@@ -1,9 +1,0 @@
-2025-01-30 22:45:28,342 - INFO - Val Loss = 1.6178, Val Accuracy = 0.49%, Precision = 0.56, Recall = 0.49, F1 = 0.50
-2025-01-30 22:50:27,019 - INFO - Val Loss = 1.6178, Val Accuracy = 0.49%, Precision = 0.56, Recall = 0.49, F1 = 0.50
-2025-01-30 22:57:28,125 - INFO - Val Loss = 1.6159, Val Accuracy = 0.50%, Precision = 0.56, Recall = 0.50, F1 = 0.51
-2025-01-30 23:14:42,225 - INFO - Val Loss = 1.1310, Val Accuracy = 0.62%, Precision = 0.58, Recall = 0.62, F1 = 0.59
-2025-01-30 23:39:44,797 - INFO - Val Loss = 1.1828, Val Accuracy = 0.59%, Precision = 0.56, Recall = 0.59, F1 = 0.58
-2025-01-30 23:51:35,023 - INFO - Val Loss = 1.1504, Val Accuracy = 0.61%, Precision = 0.56, Recall = 0.61, F1 = 0.58
-2025-01-31 00:29:45,730 - INFO - Val Loss = 1.1317, Val Accuracy = 0.63%, Precision = 0.58, Recall = 0.63, F1 = 0.58
-2025-01-31 00:49:51,743 - INFO - Val Loss = 1.1639, Val Accuracy = 0.61%, Precision = 0.56, Recall = 0.61, F1 = 0.58
-2025-01-31 01:01:21,287 - INFO - Val Loss = 1.1237, Val Accuracy = 0.63%, Precision = 0.58, Recall = 0.63, F1 = 0.59

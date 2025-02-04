@@ -95,7 +95,8 @@ def generate_metadata(csv_file, video_audio_metadata, output_json_path, dataset_
                 "video": video_path,
                 "audio": video_audio_map[video_path],
                 "text": row["Utterance"],
-                "label": row["Emotion"]
+                "label": row["Emotion"],
+                "speaker": row["Speaker"]                
             })
         else:
             print(f"Warning: Video file {video_path} not found in audio metadata map.")
