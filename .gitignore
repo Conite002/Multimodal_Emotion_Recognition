@@ -5,5 +5,8 @@ data/test/*
 outputs/preprocessed/train/*
 outputs/preprocessed/val/*
 # outputs/preprocessed/
-outputs/*
+# outputs/*
+outputs/embeddings/*
+outputs/models/*
+# outputs/models
 logs/*.env
