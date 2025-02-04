@@ -6,4 +6,4 @@ outputs/preprocessed/train/*
 outputs/preprocessed/val/*
 outputs/preprocessed/
 outputs/*
-logs/*
+logs/*.env
