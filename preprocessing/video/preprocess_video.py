@@ -61,11 +61,26 @@ def load_vit_model(model_name="google/vit-base-patch16-224-in21k"):
     return feature_extractor, model
 
 
-def preprocess_video_for_model(video_path, feature_extractor, model, num_frames=16, frame_size=(224, 224)):
+import os
+import cv2
+import torch
+import numpy as np
 
+def preprocess_video_for_model(video_path, feature_extractor, model, num_frames=16, frame_size=(224, 224), text=None):
     try:
+        if not os.path.exists(video_path):
+            print(f"Video file not found: {video_path}")
+            return None
+
+        print(f"Processing video: {video_path}")
         video = cv2.VideoCapture(video_path)
         total_frames = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
+
+        # Vérification si la vidéo contient suffisamment de frames
+        if total_frames < num_frames:
+            print(f"Warning: Video {video_path} has only {total_frames} frames. Reducing num_frames to {total_frames}.")
+            num_frames = total_frames
+        
         frame_indices = np.linspace(0, total_frames - 1, num_frames, dtype=int)
 
         frames = []
@@ -75,16 +90,26 @@ def preprocess_video_for_model(video_path, feature_extractor, model, num_frames=
             if success:
                 resized_frame = cv2.resize(frame, frame_size)
                 frames.append(resized_frame)
-
+        
         video.release()
 
-        # Prepare input for the model
-        pixel_values = feature_extractor(images=frames, return_tensors="pt")["pixel_values"]
+        if len(frames) == 0:
+            print(f"Error: No valid frames extracted from {video_path}")
+            return None
+        
+        # Préparation des inputs pour le modèle
+        extractor_inputs = {"images": frames}
+        if text:  # Ajout du texte si nécessaire
+            extractor_inputs["text"] = text
+        
+        pixel_values = feature_extractor(**extractor_inputs, return_tensors="pt")["pixel_values"]
+
         with torch.no_grad():
             outputs = model(pixel_values)
+        
         embeddings = outputs.last_hidden_state.mean(dim=1).squeeze().numpy()
-
         return embeddings
+
     except Exception as e:
         print(f"Error processing video: {e}")
         return None
