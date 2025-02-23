@@ -1,0 +1,20 @@
+# Ignore the entire data folder and its contents
+data/*
+data/train/*
+data/test/*
+outputs/preprocessed/train/*
+outputs/preprocessed/val/*
+# outputs/preprocessed/
+# outputs/*
+outputs/embeddings/*
+outputs/models/*
+# outputs/models
+logs/*.env
+./data/MELD.Raw/dev/dev.tar.gz
+./data/MELD.Raw/test/test.tar.gz
+./data/MELD.Raw/test/output_repeated_splits_test/dia220_utt0.mp4
+./data/MELD.Raw/test/output_repeated_splits_test/dia38_utt4.mp4
+./data/MELD.Raw/train/train.tar.gz
+./data/MELD.Raw.tar.gz
+data/
+./data

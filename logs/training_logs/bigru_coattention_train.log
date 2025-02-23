@@ -1,0 +1,380 @@
+2025-01-26 20:58:11,901 - INFO - Starting Epoch 1/50
+2025-01-26 20:58:27,512 - INFO - Accuracy of class 0: 94.46%
+2025-01-26 20:58:27,512 - INFO - Accuracy of class 1: 59.51%
+2025-01-26 20:58:27,512 - INFO - Accuracy of class 2: 28.10%
+2025-01-26 20:58:27,512 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:58:27,523 - INFO - Validation Loss: 0.7966, Validation Accuracy: 72.24%, Precision: 0.70, Recall: 0.72, F1: 0.69
+2025-01-26 20:58:27,524 - INFO - Starting Epoch 2/50
+2025-01-26 20:58:43,182 - INFO - Accuracy of class 0: 89.13%
+2025-01-26 20:58:43,183 - INFO - Accuracy of class 1: 60.74%
+2025-01-26 20:58:43,183 - INFO - Accuracy of class 2: 39.22%
+2025-01-26 20:58:43,183 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:58:43,192 - INFO - Validation Loss: 0.7940, Validation Accuracy: 71.50%, Precision: 0.68, Recall: 0.71, F1: 0.69
+2025-01-26 20:58:43,193 - INFO - Starting Epoch 3/50
+2025-01-26 20:58:58,877 - INFO - Accuracy of class 0: 88.49%
+2025-01-26 20:58:58,877 - INFO - Accuracy of class 1: 58.90%
+2025-01-26 20:58:58,877 - INFO - Accuracy of class 2: 43.14%
+2025-01-26 20:58:58,877 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:58:58,885 - INFO - Validation Loss: 0.7628, Validation Accuracy: 71.50%, Precision: 0.68, Recall: 0.71, F1: 0.70
+2025-01-26 20:58:58,887 - INFO - Starting Epoch 4/50
+2025-01-26 20:59:14,658 - INFO - Accuracy of class 0: 94.24%
+2025-01-26 20:59:14,658 - INFO - Accuracy of class 1: 47.85%
+2025-01-26 20:59:14,659 - INFO - Accuracy of class 2: 46.41%
+2025-01-26 20:59:14,659 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:59:14,668 - INFO - Validation Loss: 0.7775, Validation Accuracy: 73.23%, Precision: 0.70, Recall: 0.73, F1: 0.70
+2025-01-26 20:59:14,668 - INFO - Starting Epoch 5/50
+2025-01-26 20:59:30,503 - INFO - Accuracy of class 0: 91.47%
+2025-01-26 20:59:30,504 - INFO - Accuracy of class 1: 53.99%
+2025-01-26 20:59:30,504 - INFO - Accuracy of class 2: 39.22%
+2025-01-26 20:59:30,504 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:59:30,515 - INFO - Validation Loss: 0.7786, Validation Accuracy: 71.50%, Precision: 0.68, Recall: 0.71, F1: 0.69
+2025-01-26 20:59:30,515 - INFO - Starting Epoch 6/50
+2025-01-26 20:59:46,857 - INFO - Accuracy of class 0: 88.06%
+2025-01-26 20:59:46,857 - INFO - Accuracy of class 1: 48.47%
+2025-01-26 20:59:46,857 - INFO - Accuracy of class 2: 51.63%
+2025-01-26 20:59:46,857 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 20:59:46,866 - INFO - Validation Loss: 0.7973, Validation Accuracy: 70.76%, Precision: 0.68, Recall: 0.71, F1: 0.69
+2025-01-26 20:59:46,866 - INFO - Starting Epoch 7/50
+2025-01-26 21:00:03,773 - INFO - Accuracy of class 0: 89.34%
+2025-01-26 21:00:03,773 - INFO - Accuracy of class 1: 58.28%
+2025-01-26 21:00:03,773 - INFO - Accuracy of class 2: 45.10%
+2025-01-26 21:00:03,773 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:00:03,783 - INFO - Validation Loss: 0.8439, Validation Accuracy: 72.24%, Precision: 0.69, Recall: 0.72, F1: 0.70
+2025-01-26 21:00:03,783 - INFO - Starting Epoch 8/50
+2025-01-26 21:00:21,301 - INFO - Accuracy of class 0: 86.78%
+2025-01-26 21:00:21,302 - INFO - Accuracy of class 1: 61.35%
+2025-01-26 21:00:21,302 - INFO - Accuracy of class 2: 41.83%
+2025-01-26 21:00:21,302 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:00:21,312 - INFO - Validation Loss: 0.8492, Validation Accuracy: 70.88%, Precision: 0.69, Recall: 0.71, F1: 0.69
+2025-01-26 21:00:21,312 - INFO - Early stopping at epoch 8
+2025-01-26 21:00:21,329 - INFO - Best model saved with validation loss: 0.7628
+2025-01-26 21:06:46,804 - INFO - Starting Epoch 1/50
+2025-01-26 21:07:02,522 - INFO - Accuracy of class 0: 97.01%
+2025-01-26 21:07:02,522 - INFO - Accuracy of class 1: 53.99%
+2025-01-26 21:07:02,522 - INFO - Accuracy of class 2: 24.18%
+2025-01-26 21:07:02,522 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:07:02,533 - INFO - Validation Loss: 0.8390, Validation Accuracy: 71.87%, Precision: 0.70, Recall: 0.72, F1: 0.67
+2025-01-26 21:07:02,534 - INFO - Starting Epoch 2/50
+2025-01-26 21:07:18,335 - INFO - Accuracy of class 0: 92.96%
+2025-01-26 21:07:18,335 - INFO - Accuracy of class 1: 53.37%
+2025-01-26 21:07:18,335 - INFO - Accuracy of class 2: 43.79%
+2025-01-26 21:07:18,336 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:07:18,345 - INFO - Validation Loss: 0.7451, Validation Accuracy: 73.11%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:07:18,345 - INFO - Starting Epoch 3/50
+2025-01-26 21:07:33,987 - INFO - Accuracy of class 0: 92.11%
+2025-01-26 21:07:33,987 - INFO - Accuracy of class 1: 55.83%
+2025-01-26 21:07:33,987 - INFO - Accuracy of class 2: 41.18%
+2025-01-26 21:07:33,987 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:07:33,996 - INFO - Validation Loss: 0.7490, Validation Accuracy: 72.61%, Precision: 0.69, Recall: 0.73, F1: 0.70
+2025-01-26 21:07:33,997 - INFO - Starting Epoch 4/50
+2025-01-26 21:07:49,938 - INFO - Accuracy of class 0: 93.18%
+2025-01-26 21:07:49,938 - INFO - Accuracy of class 1: 50.92%
+2025-01-26 21:07:49,938 - INFO - Accuracy of class 2: 45.75%
+2025-01-26 21:07:49,938 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:07:49,947 - INFO - Validation Loss: 0.7791, Validation Accuracy: 73.11%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:07:49,947 - INFO - Starting Epoch 5/50
+2025-01-26 21:08:05,782 - INFO - Accuracy of class 0: 86.78%
+2025-01-26 21:08:05,782 - INFO - Accuracy of class 1: 49.69%
+2025-01-26 21:08:05,782 - INFO - Accuracy of class 2: 55.56%
+2025-01-26 21:08:05,782 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:08:05,791 - INFO - Validation Loss: 0.7729, Validation Accuracy: 71.00%, Precision: 0.68, Recall: 0.71, F1: 0.70
+2025-01-26 21:08:05,791 - INFO - Starting Epoch 6/50
+2025-01-26 21:08:22,362 - INFO - Accuracy of class 0: 89.55%
+2025-01-26 21:08:22,362 - INFO - Accuracy of class 1: 57.06%
+2025-01-26 21:08:22,362 - INFO - Accuracy of class 2: 45.75%
+2025-01-26 21:08:22,362 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:08:22,371 - INFO - Validation Loss: 0.7598, Validation Accuracy: 72.37%, Precision: 0.71, Recall: 0.72, F1: 0.70
+2025-01-26 21:08:22,372 - INFO - Starting Epoch 7/50
+2025-01-26 21:08:39,546 - INFO - Accuracy of class 0: 93.18%
+2025-01-26 21:08:39,546 - INFO - Accuracy of class 1: 41.72%
+2025-01-26 21:08:39,546 - INFO - Accuracy of class 2: 49.02%
+2025-01-26 21:08:39,546 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:08:39,555 - INFO - Validation Loss: 0.8463, Validation Accuracy: 71.87%, Precision: 0.69, Recall: 0.72, F1: 0.69
+2025-01-26 21:08:39,555 - INFO - Starting Epoch 8/50
+2025-01-26 21:08:57,312 - INFO - Accuracy of class 0: 81.24%
+2025-01-26 21:08:57,312 - INFO - Accuracy of class 1: 68.10%
+2025-01-26 21:08:57,312 - INFO - Accuracy of class 2: 41.83%
+2025-01-26 21:08:57,313 - INFO - Accuracy of class 3: 13.64%
+2025-01-26 21:08:57,325 - INFO - Validation Loss: 0.8629, Validation Accuracy: 69.27%, Precision: 0.69, Recall: 0.69, F1: 0.69
+2025-01-26 21:08:57,325 - INFO - Starting Epoch 9/50
+2025-01-26 21:09:15,090 - INFO - Accuracy of class 0: 88.70%
+2025-01-26 21:09:15,091 - INFO - Accuracy of class 1: 55.83%
+2025-01-26 21:09:15,091 - INFO - Accuracy of class 2: 47.06%
+2025-01-26 21:09:15,091 - INFO - Accuracy of class 3: 9.09%
+2025-01-26 21:09:15,099 - INFO - Validation Loss: 0.8597, Validation Accuracy: 72.00%, Precision: 0.70, Recall: 0.72, F1: 0.70
+2025-01-26 21:09:15,100 - INFO - Starting Epoch 10/50
+2025-01-26 21:09:33,092 - INFO - Accuracy of class 0: 84.65%
+2025-01-26 21:09:33,092 - INFO - Accuracy of class 1: 49.69%
+2025-01-26 21:09:33,092 - INFO - Accuracy of class 2: 54.90%
+2025-01-26 21:09:33,092 - INFO - Accuracy of class 3: 9.09%
+2025-01-26 21:09:33,102 - INFO - Validation Loss: 0.8951, Validation Accuracy: 69.89%, Precision: 0.69, Recall: 0.70, F1: 0.69
+2025-01-26 21:09:33,103 - INFO - Starting Epoch 11/50
+2025-01-26 21:09:50,929 - INFO - Accuracy of class 0: 86.99%
+2025-01-26 21:09:50,930 - INFO - Accuracy of class 1: 61.35%
+2025-01-26 21:09:50,930 - INFO - Accuracy of class 2: 37.91%
+2025-01-26 21:09:50,930 - INFO - Accuracy of class 3: 9.09%
+2025-01-26 21:09:50,939 - INFO - Validation Loss: 0.9298, Validation Accuracy: 70.38%, Precision: 0.69, Recall: 0.70, F1: 0.69
+2025-01-26 21:09:50,939 - INFO - Starting Epoch 12/50
+2025-01-26 21:10:09,088 - INFO - Accuracy of class 0: 84.01%
+2025-01-26 21:10:09,088 - INFO - Accuracy of class 1: 60.74%
+2025-01-26 21:10:09,088 - INFO - Accuracy of class 2: 43.14%
+2025-01-26 21:10:09,088 - INFO - Accuracy of class 3: 9.09%
+2025-01-26 21:10:09,101 - INFO - Validation Loss: 0.9457, Validation Accuracy: 69.52%, Precision: 0.68, Recall: 0.70, F1: 0.68
+2025-01-26 21:10:09,101 - INFO - Early stopping at epoch 12
+2025-01-26 21:10:09,122 - INFO - Best model saved with validation loss: 0.7451
+2025-01-26 21:12:59,996 - INFO - Starting Epoch 1/50
+2025-01-26 21:13:15,844 - INFO - Accuracy of class 0: 94.24%
+2025-01-26 21:13:15,844 - INFO - Accuracy of class 1: 61.96%
+2025-01-26 21:13:15,844 - INFO - Accuracy of class 2: 5.88%
+2025-01-26 21:13:15,844 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:13:15,858 - INFO - Validation Loss: 0.8363, Validation Accuracy: 68.40%, Precision: 0.71, Recall: 0.68, F1: 0.62
+2025-01-26 21:13:15,859 - INFO - Starting Epoch 2/50
+2025-01-26 21:13:31,189 - INFO - Accuracy of class 0: 92.54%
+2025-01-26 21:13:31,189 - INFO - Accuracy of class 1: 47.85%
+2025-01-26 21:13:31,189 - INFO - Accuracy of class 2: 50.98%
+2025-01-26 21:13:31,189 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:13:31,198 - INFO - Validation Loss: 0.7574, Validation Accuracy: 73.11%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:13:31,198 - INFO - Starting Epoch 3/50
+2025-01-26 21:13:47,171 - INFO - Accuracy of class 0: 88.06%
+2025-01-26 21:13:47,171 - INFO - Accuracy of class 1: 58.28%
+2025-01-26 21:13:47,171 - INFO - Accuracy of class 2: 43.79%
+2025-01-26 21:13:47,171 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:13:47,181 - INFO - Validation Loss: 0.7441, Validation Accuracy: 71.25%, Precision: 0.68, Recall: 0.71, F1: 0.69
+2025-01-26 21:13:47,182 - INFO - Starting Epoch 4/50
+2025-01-26 21:14:02,746 - INFO - Accuracy of class 0: 95.74%
+2025-01-26 21:14:02,746 - INFO - Accuracy of class 1: 53.37%
+2025-01-26 21:14:02,746 - INFO - Accuracy of class 2: 38.56%
+2025-01-26 21:14:02,746 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:14:02,755 - INFO - Validation Loss: 0.7978, Validation Accuracy: 73.73%, Precision: 0.71, Recall: 0.74, F1: 0.71
+2025-01-26 21:14:02,755 - INFO - Starting Epoch 5/50
+2025-01-26 21:14:18,708 - INFO - Accuracy of class 0: 92.96%
+2025-01-26 21:14:18,709 - INFO - Accuracy of class 1: 53.37%
+2025-01-26 21:14:18,709 - INFO - Accuracy of class 2: 39.87%
+2025-01-26 21:14:18,709 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:14:18,718 - INFO - Validation Loss: 0.8340, Validation Accuracy: 72.37%, Precision: 0.69, Recall: 0.72, F1: 0.70
+2025-01-26 21:14:18,718 - INFO - Starting Epoch 6/50
+2025-01-26 21:14:35,273 - INFO - Accuracy of class 0: 92.54%
+2025-01-26 21:14:35,273 - INFO - Accuracy of class 1: 55.21%
+2025-01-26 21:14:35,273 - INFO - Accuracy of class 2: 35.95%
+2025-01-26 21:14:35,273 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:14:35,285 - INFO - Validation Loss: 0.8261, Validation Accuracy: 71.75%, Precision: 0.69, Recall: 0.72, F1: 0.69
+2025-01-26 21:14:35,286 - INFO - Starting Epoch 7/50
+2025-01-26 21:14:52,508 - INFO - Accuracy of class 0: 87.63%
+2025-01-26 21:14:52,508 - INFO - Accuracy of class 1: 43.56%
+2025-01-26 21:14:52,508 - INFO - Accuracy of class 2: 57.52%
+2025-01-26 21:14:52,508 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:14:52,517 - INFO - Validation Loss: 0.7791, Validation Accuracy: 70.76%, Precision: 0.70, Recall: 0.71, F1: 0.69
+2025-01-26 21:14:52,518 - INFO - Starting Epoch 8/50
+2025-01-26 21:15:09,950 - INFO - Accuracy of class 0: 89.34%
+2025-01-26 21:15:09,951 - INFO - Accuracy of class 1: 57.67%
+2025-01-26 21:15:09,951 - INFO - Accuracy of class 2: 42.48%
+2025-01-26 21:15:09,951 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:15:09,959 - INFO - Validation Loss: 0.8053, Validation Accuracy: 71.75%, Precision: 0.70, Recall: 0.72, F1: 0.70
+2025-01-26 21:15:09,960 - INFO - Starting Epoch 9/50
+2025-01-26 21:15:27,945 - INFO - Accuracy of class 0: 90.83%
+2025-01-26 21:15:27,945 - INFO - Accuracy of class 1: 55.21%
+2025-01-26 21:15:27,945 - INFO - Accuracy of class 2: 45.75%
+2025-01-26 21:15:27,945 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:15:27,955 - INFO - Validation Loss: 0.8529, Validation Accuracy: 72.61%, Precision: 0.70, Recall: 0.73, F1: 0.71
+2025-01-26 21:15:27,955 - INFO - Starting Epoch 10/50
+2025-01-26 21:15:46,249 - INFO - Accuracy of class 0: 90.83%
+2025-01-26 21:15:46,249 - INFO - Accuracy of class 1: 52.15%
+2025-01-26 21:15:46,249 - INFO - Accuracy of class 2: 33.33%
+2025-01-26 21:15:46,249 - INFO - Accuracy of class 3: 18.18%
+2025-01-26 21:15:46,258 - INFO - Validation Loss: 0.9265, Validation Accuracy: 70.14%, Precision: 0.68, Recall: 0.70, F1: 0.68
+2025-01-26 21:15:46,258 - INFO - Starting Epoch 11/50
+2025-01-26 21:16:04,338 - INFO - Accuracy of class 0: 85.07%
+2025-01-26 21:16:04,338 - INFO - Accuracy of class 1: 57.67%
+2025-01-26 21:16:04,338 - INFO - Accuracy of class 2: 46.41%
+2025-01-26 21:16:04,338 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:16:04,347 - INFO - Validation Loss: 0.8934, Validation Accuracy: 70.01%, Precision: 0.68, Recall: 0.70, F1: 0.69
+2025-01-26 21:16:04,348 - INFO - Starting Epoch 12/50
+2025-01-26 21:16:22,337 - INFO - Accuracy of class 0: 89.55%
+2025-01-26 21:16:22,337 - INFO - Accuracy of class 1: 52.15%
+2025-01-26 21:16:22,337 - INFO - Accuracy of class 2: 38.56%
+2025-01-26 21:16:22,337 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:16:22,346 - INFO - Validation Loss: 0.9353, Validation Accuracy: 70.01%, Precision: 0.67, Recall: 0.70, F1: 0.68
+2025-01-26 21:16:22,347 - INFO - Starting Epoch 13/50
+2025-01-26 21:16:40,430 - INFO - Accuracy of class 0: 90.83%
+2025-01-26 21:16:40,430 - INFO - Accuracy of class 1: 48.47%
+2025-01-26 21:16:40,430 - INFO - Accuracy of class 2: 37.91%
+2025-01-26 21:16:40,430 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:16:40,439 - INFO - Validation Loss: 0.9816, Validation Accuracy: 69.89%, Precision: 0.68, Recall: 0.70, F1: 0.68
+2025-01-26 21:16:40,439 - INFO - Early stopping at epoch 13
+2025-01-26 21:16:40,457 - INFO - Best model saved with validation loss: 0.7441
+2025-01-26 21:44:50,994 - INFO - Starting Epoch 1/50
+2025-01-26 21:45:06,737 - INFO - Accuracy of class 0: 94.46%
+2025-01-26 21:45:06,737 - INFO - Accuracy of class 1: 51.53%
+2025-01-26 21:45:06,737 - INFO - Accuracy of class 2: 25.49%
+2025-01-26 21:45:06,738 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:45:06,738 - INFO - Accuracy of class 4: 0.00%
+2025-01-26 21:45:06,738 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:45:06,738 - INFO - Accuracy of class 6: 0.00%
+2025-01-26 21:45:06,750 - INFO - Validation Loss: 0.8281, Validation Accuracy: 70.14%, Precision: 0.66, Recall: 0.70, F1: 0.66
+2025-01-26 21:45:06,751 - INFO - Starting Epoch 2/50
+2025-01-26 21:45:22,265 - INFO - Accuracy of class 0: 93.82%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 1: 57.06%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 2: 33.99%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 4: 0.00%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:45:22,266 - INFO - Accuracy of class 6: 0.00%
+2025-01-26 21:45:22,274 - INFO - Validation Loss: 0.7920, Validation Accuracy: 72.49%, Precision: 0.69, Recall: 0.72, F1: 0.69
+2025-01-26 21:45:22,275 - INFO - Starting Epoch 3/50
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 0: 93.39%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 1: 52.15%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 2: 43.14%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 4: 0.00%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:45:37,929 - INFO - Accuracy of class 6: 0.00%
+2025-01-26 21:45:37,939 - INFO - Validation Loss: 0.7696, Validation Accuracy: 72.99%, Precision: 0.70, Recall: 0.73, F1: 0.70
+2025-01-26 21:45:37,940 - INFO - Starting Epoch 4/50
+2025-01-26 21:46:38,643 - INFO - Starting Epoch 1/50
+2025-01-26 21:46:58,572 - INFO - Accuracy of class 0: 87.21%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 1: 45.40%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 2: 25.49%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 4: 0.90%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:46:58,573 - INFO - Accuracy of class 6: 53.33%
+2025-01-26 21:46:58,583 - INFO - Validation Loss: 1.3547, Validation Accuracy: 54.42%, Precision: 0.54, Recall: 0.54, F1: 0.48
+2025-01-26 21:46:58,584 - INFO - Starting Epoch 2/50
+2025-01-26 21:47:19,063 - INFO - Accuracy of class 0: 84.01%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 1: 60.12%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 2: 37.91%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 4: 2.70%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:47:19,064 - INFO - Accuracy of class 6: 39.33%
+2025-01-26 21:47:19,078 - INFO - Validation Loss: 1.3243, Validation Accuracy: 55.23%, Precision: 0.50, Recall: 0.55, F1: 0.50
+2025-01-26 21:47:19,079 - INFO - Starting Epoch 3/50
+2025-01-26 21:47:39,248 - INFO - Accuracy of class 0: 89.34%
+2025-01-26 21:47:39,248 - INFO - Accuracy of class 1: 40.49%
+2025-01-26 21:47:39,248 - INFO - Accuracy of class 2: 24.84%
+2025-01-26 21:47:39,249 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:47:39,249 - INFO - Accuracy of class 4: 2.70%
+2025-01-26 21:47:39,249 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:47:39,249 - INFO - Accuracy of class 6: 63.33%
+2025-01-26 21:47:39,260 - INFO - Validation Loss: 1.3333, Validation Accuracy: 56.05%, Precision: 0.54, Recall: 0.56, F1: 0.50
+2025-01-26 21:47:39,261 - INFO - Starting Epoch 4/50
+2025-01-26 21:47:59,883 - INFO - Accuracy of class 0: 89.34%
+2025-01-26 21:47:59,883 - INFO - Accuracy of class 1: 44.17%
+2025-01-26 21:47:59,883 - INFO - Accuracy of class 2: 41.83%
+2025-01-26 21:47:59,884 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:47:59,884 - INFO - Accuracy of class 4: 6.31%
+2025-01-26 21:47:59,884 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:47:59,884 - INFO - Accuracy of class 6: 50.67%
+2025-01-26 21:47:59,894 - INFO - Validation Loss: 1.2939, Validation Accuracy: 57.58%, Precision: 0.54, Recall: 0.58, F1: 0.52
+2025-01-26 21:47:59,895 - INFO - Starting Epoch 5/50
+2025-01-26 21:48:21,348 - INFO - Accuracy of class 0: 85.07%
+2025-01-26 21:48:21,348 - INFO - Accuracy of class 1: 56.44%
+2025-01-26 21:48:21,348 - INFO - Accuracy of class 2: 36.60%
+2025-01-26 21:48:21,348 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:48:21,349 - INFO - Accuracy of class 4: 19.82%
+2025-01-26 21:48:21,349 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:48:21,349 - INFO - Accuracy of class 6: 54.00%
+2025-01-26 21:48:21,359 - INFO - Validation Loss: 1.2686, Validation Accuracy: 58.66%, Precision: 0.53, Recall: 0.59, F1: 0.55
+2025-01-26 21:48:21,359 - INFO - Starting Epoch 6/50
+2025-01-26 21:48:43,803 - INFO - Accuracy of class 0: 84.43%
+2025-01-26 21:48:43,803 - INFO - Accuracy of class 1: 54.60%
+2025-01-26 21:48:43,804 - INFO - Accuracy of class 2: 44.44%
+2025-01-26 21:48:43,804 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:48:43,804 - INFO - Accuracy of class 4: 21.62%
+2025-01-26 21:48:43,804 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:48:43,804 - INFO - Accuracy of class 6: 46.67%
+2025-01-26 21:48:43,814 - INFO - Validation Loss: 1.2676, Validation Accuracy: 58.39%, Precision: 0.54, Recall: 0.58, F1: 0.55
+2025-01-26 21:48:43,815 - INFO - Starting Epoch 7/50
+2025-01-26 21:49:06,511 - INFO - Accuracy of class 0: 91.04%
+2025-01-26 21:49:06,511 - INFO - Accuracy of class 1: 47.85%
+2025-01-26 21:49:06,511 - INFO - Accuracy of class 2: 32.03%
+2025-01-26 21:49:06,511 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:49:06,512 - INFO - Accuracy of class 4: 9.91%
+2025-01-26 21:49:06,512 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:49:06,512 - INFO - Accuracy of class 6: 50.67%
+2025-01-26 21:49:06,521 - INFO - Validation Loss: 1.3791, Validation Accuracy: 57.85%, Precision: 0.54, Recall: 0.58, F1: 0.52
+2025-01-26 21:49:06,522 - INFO - Starting Epoch 8/50
+2025-01-26 21:49:29,628 - INFO - Accuracy of class 0: 79.96%
+2025-01-26 21:49:29,628 - INFO - Accuracy of class 1: 58.90%
+2025-01-26 21:49:29,629 - INFO - Accuracy of class 2: 37.25%
+2025-01-26 21:49:29,629 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:49:29,629 - INFO - Accuracy of class 4: 25.23%
+2025-01-26 21:49:29,629 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:49:29,629 - INFO - Accuracy of class 6: 52.67%
+2025-01-26 21:49:29,639 - INFO - Validation Loss: 1.2999, Validation Accuracy: 57.31%, Precision: 0.53, Recall: 0.57, F1: 0.55
+2025-01-26 21:49:29,639 - INFO - Starting Epoch 9/50
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 0: 88.27%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 1: 50.92%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 2: 36.60%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 4: 13.51%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:49:53,010 - INFO - Accuracy of class 6: 56.67%
+2025-01-26 21:49:53,020 - INFO - Validation Loss: 1.3265, Validation Accuracy: 58.94%, Precision: 0.54, Recall: 0.59, F1: 0.54
+2025-01-26 21:49:53,020 - INFO - Starting Epoch 10/50
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 0: 86.78%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 1: 48.47%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 2: 32.03%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 4: 32.43%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:50:16,700 - INFO - Accuracy of class 6: 40.67%
+2025-01-26 21:50:16,714 - INFO - Validation Loss: 1.3188, Validation Accuracy: 57.04%, Precision: 0.52, Recall: 0.57, F1: 0.54
+2025-01-26 21:50:16,715 - INFO - Starting Epoch 11/50
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 0: 79.32%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 1: 60.74%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 2: 29.41%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 4: 24.32%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:50:40,181 - INFO - Accuracy of class 6: 50.00%
+2025-01-26 21:50:40,190 - INFO - Validation Loss: 1.3259, Validation Accuracy: 55.78%, Precision: 0.52, Recall: 0.56, F1: 0.53
+2025-01-26 21:50:40,190 - INFO - Starting Epoch 12/50
+2025-01-26 21:51:03,937 - INFO - Accuracy of class 0: 83.16%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 1: 60.12%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 2: 31.37%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 4: 13.51%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:51:03,938 - INFO - Accuracy of class 6: 61.33%
+2025-01-26 21:51:03,951 - INFO - Validation Loss: 1.4470, Validation Accuracy: 58.12%, Precision: 0.54, Recall: 0.58, F1: 0.54
+2025-01-26 21:51:03,952 - INFO - Starting Epoch 13/50
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 0: 85.93%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 1: 55.83%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 2: 32.68%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 4: 16.22%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:51:27,723 - INFO - Accuracy of class 6: 52.67%
+2025-01-26 21:51:27,734 - INFO - Validation Loss: 1.4452, Validation Accuracy: 57.85%, Precision: 0.53, Recall: 0.58, F1: 0.54
+2025-01-26 21:51:27,734 - INFO - Starting Epoch 14/50
+2025-01-26 21:51:51,471 - INFO - Accuracy of class 0: 81.02%
+2025-01-26 21:51:51,471 - INFO - Accuracy of class 1: 52.15%
+2025-01-26 21:51:51,471 - INFO - Accuracy of class 2: 42.48%
+2025-01-26 21:51:51,471 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:51:51,472 - INFO - Accuracy of class 4: 24.32%
+2025-01-26 21:51:51,472 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:51:51,472 - INFO - Accuracy of class 6: 52.00%
+2025-01-26 21:51:51,482 - INFO - Validation Loss: 1.4271, Validation Accuracy: 57.31%, Precision: 0.53, Recall: 0.57, F1: 0.55
+2025-01-26 21:51:51,482 - INFO - Starting Epoch 15/50
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 0: 82.52%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 1: 45.40%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 2: 33.33%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 3: 0.00%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 4: 24.32%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:52:16,803 - INFO - Accuracy of class 6: 58.00%
+2025-01-26 21:52:16,813 - INFO - Validation Loss: 1.4039, Validation Accuracy: 56.50%, Precision: 0.52, Recall: 0.56, F1: 0.53
+2025-01-26 21:52:16,813 - INFO - Starting Epoch 16/50
+2025-01-26 21:52:48,500 - INFO - Accuracy of class 0: 83.80%
+2025-01-26 21:52:48,500 - INFO - Accuracy of class 1: 53.37%
+2025-01-26 21:52:48,501 - INFO - Accuracy of class 2: 35.29%
+2025-01-26 21:52:48,501 - INFO - Accuracy of class 3: 4.55%
+2025-01-26 21:52:48,501 - INFO - Accuracy of class 4: 12.61%
+2025-01-26 21:52:48,501 - INFO - Accuracy of class 5: 5.00%
+2025-01-26 21:52:48,501 - INFO - Accuracy of class 6: 54.00%
+2025-01-26 21:52:48,511 - INFO - Validation Loss: 1.5263, Validation Accuracy: 57.04%, Precision: 0.55, Recall: 0.57, F1: 0.53
+2025-01-26 21:52:48,511 - INFO - Early stopping at epoch 16
+2025-01-26 21:52:48,530 - INFO - Best model saved with validation loss: 1.2676
+2025-01-27 09:25:50,965 - INFO - Starting Epoch 1/50
+2025-01-27 09:26:39,991 - INFO - Starting Epoch 1/50

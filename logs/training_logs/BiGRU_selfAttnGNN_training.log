@@ -1,0 +1,15 @@
+2025-02-03 01:09:49,030 - INFO - Starting Epoch 1/50
+2025-02-03 01:12:43,443 - INFO - Val Loss = 1.6285, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:12:43,488 - INFO - Best model saved at epoch 1 with val loss: 1.6285
+2025-02-03 01:12:43,489 - INFO - Starting Epoch 2/50
+2025-02-03 01:15:38,868 - INFO - Val Loss = 1.6289, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:15:38,869 - INFO - Starting Epoch 3/50
+2025-02-03 01:18:34,417 - INFO - Val Loss = 1.6303, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:18:34,419 - INFO - Starting Epoch 4/50
+2025-02-03 01:21:29,854 - INFO - Val Loss = 1.6293, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:21:29,856 - INFO - Starting Epoch 5/50
+2025-02-03 01:24:26,618 - INFO - Val Loss = 1.6299, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:24:26,620 - INFO - Starting Epoch 6/50
+2025-02-03 01:27:21,428 - INFO - Val Loss = 1.6295, Val Accuracy = 0.42%, Precision = 0.18, Recall = 0.42, F1 = 0.25
+2025-02-03 01:27:21,428 - INFO - Early stopping at epoch 6
+2025-02-03 01:27:21,467 - INFO - Loaded best model with val loss: 1.6285

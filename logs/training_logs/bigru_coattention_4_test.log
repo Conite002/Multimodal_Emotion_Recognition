@@ -1,0 +1,38 @@
+2025-01-26 21:03:43,920 - INFO - Accuracy of class 0: 85.75%
+2025-01-26 21:03:43,920 - INFO - Accuracy of class 1: 62.94%
+2025-01-26 21:03:43,921 - INFO - Accuracy of class 2: 38.84%
+2025-01-26 21:03:43,921 - INFO - Accuracy of class 3: 2.94%
+2025-01-26 21:03:43,921 - INFO - Accuracy of class 4: 0.00%
+2025-01-26 21:03:43,921 - INFO - Accuracy of class 5: 0.00%
+2025-01-26 21:03:43,921 - INFO - Accuracy of class 6: 0.00%
+2025-01-26 21:03:43,940 - INFO - Test Accuracy: 70.79%, Precision: 0.69, Recall: 0.71, F1: 0.69
+2025-01-26 21:10:24,110 - INFO - Accuracy of class 0: 83.12%
+2025-01-26 21:10:24,139 - INFO - Accuracy of class 1: 62.19%
+2025-01-26 21:10:24,139 - INFO - Accuracy of class 2: 39.71%
+2025-01-26 21:10:24,139 - INFO - Accuracy of class 3: 8.82%
+2025-01-26 21:10:24,152 - INFO - Test Accuracy: 69.39%, Precision: 0.68, Recall: 0.69, F1: 0.69
+2025-01-26 21:10:49,547 - INFO - Accuracy of class 0: 83.12%
+2025-01-26 21:10:49,547 - INFO - Accuracy of class 1: 62.19%
+2025-01-26 21:10:49,547 - INFO - Accuracy of class 2: 39.71%
+2025-01-26 21:10:49,547 - INFO - Accuracy of class 3: 8.82%
+2025-01-26 21:10:49,568 - INFO - Test Accuracy: 69.39%, Precision: 0.68, Recall: 0.69, F1: 0.69
+2025-01-26 21:10:56,831 - INFO - Accuracy of class 0: 83.12%
+2025-01-26 21:10:56,831 - INFO - Accuracy of class 1: 62.19%
+2025-01-26 21:10:56,831 - INFO - Accuracy of class 2: 39.71%
+2025-01-26 21:10:56,831 - INFO - Accuracy of class 3: 8.82%
+2025-01-26 21:10:56,844 - INFO - Test Accuracy: 69.39%, Precision: 0.68, Recall: 0.69, F1: 0.69
+2025-01-26 21:11:27,207 - INFO - Accuracy of class 0: 83.12%
+2025-01-26 21:11:27,207 - INFO - Accuracy of class 1: 62.19%
+2025-01-26 21:11:27,207 - INFO - Accuracy of class 2: 39.71%
+2025-01-26 21:11:27,207 - INFO - Accuracy of class 3: 8.82%
+2025-01-26 21:11:27,220 - INFO - Test Accuracy: 69.39%, Precision: 0.68, Recall: 0.69, F1: 0.69
+2025-01-26 21:16:51,473 - INFO - Accuracy of class 0: 91.24%
+2025-01-26 21:16:51,474 - INFO - Accuracy of class 1: 49.25%
+2025-01-26 21:16:51,474 - INFO - Accuracy of class 2: 41.16%
+2025-01-26 21:16:51,474 - INFO - Accuracy of class 3: 10.29%
+2025-01-26 21:16:51,490 - INFO - Test Accuracy: 72.09%, Precision: 0.69, Recall: 0.72, F1: 0.70
+2025-01-26 21:17:52,317 - INFO - Accuracy of class 0: 91.24%
+2025-01-26 21:17:52,318 - INFO - Accuracy of class 1: 49.25%
+2025-01-26 21:17:52,318 - INFO - Accuracy of class 2: 41.16%
+2025-01-26 21:17:52,318 - INFO - Accuracy of class 3: 10.29%
+2025-01-26 21:17:52,330 - INFO - Test Accuracy: 72.09%, Precision: 0.69, Recall: 0.72, F1: 0.70
